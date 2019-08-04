@@ -220,6 +220,11 @@
       <div id="toc" class="toc-list-h1">
           <li>
             <a href="#introduction" class="toc-h1 toc-link" data-title="introduction">Introduction</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#ampronled-software" class="toc-h2 toc-link" data-title="ampronled-software">AmpronLED software</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#communication-protocol" class="toc-h1 toc-link" data-title="communication-protocol">Communication Protocol</a>
@@ -311,30 +316,30 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>This document describes the main aspects for configuration and communication of Smart LED Display System provided by Ampron. The  purpose is to detail the configuration and communication protocol for the use by third party integrations of our displays.
-AmpronLED software is designed to drive and monitor the status of Ampron manufactured LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.</p>
+<p>The purpose is to describe the configuration of Ampron LED display communication protocol. </p>
+<h2 id='ampronled-software'>AmpronLED software</h2>
+<p>AmpronLED software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.</p>
 
-<p>Current API is composed to define the ways to configure and communicate with the software. General approach, method, syntax and semantics are defined in the following chapters.</p>
+<p>Current API defines the ways of configuring and communicating with the software. The general approach, method, syntax and semantics are described in the following chapters.</p>
 
-<p>Communication protocol is defined to a level of technical detail which should assure clear understanding of how to drive, monitor and manage the software and displays. Communication methods and syntax are considered final and remain unchangeable without written agreement between both parties.</p>
+<p>The communication protocol is defined to a level of technical detail which should assure a clear understanding of how to drive, monitor and manage the software and displays.</p>
 
-<p>Following is structured in a way that at the left side you will see descriptions and at the right side are the example values.</p>
+<p>Following is a structured in a way that at the left side you will see descriptions and at the right side are the example values.</p>
 <h1 id='communication-protocol'>Communication Protocol</h1>
-<p>This chapter is intended to describe the communication concept and protocol between Third Party Communication Module (TPCM) and AmpronLED software for operational environment. Communication protocol is closely related to the configuration of AmpronLED software.
-Additional requirements to the LED Displays control software will be inherited from the proposal or the Client specific Final Design Document (FDD), additionally some functionality will be modified, if needed, during design meetings.</p>
+<p>This chapter is intended to describe the communication concept and protocol between Third Party Communication Module (TPCM) and AmpronLED software for the operational environment. The communication protocol is closely related to the configuration of AmpronLED software.</p>
 
 <p>Main Communication Process:</p>
 
 <p><strong>PHASE1</strong>
--   Third Party Communication Module (TPCM) sends control message to AmpronLED</p>
+-    Third-Party Communication Module (TPCM) sends a control message to AmpronLED</p>
 
 <p><strong>PHASE2</strong>
--   AmpronLED sends data to Smart LED Display System (SLDS)</p>
+-    AmpronLED sends data to the Smart LED Display System (SLDS)</p>
 
 <p><strong>PHASE3</strong>
--   SLDS reports back to AmpronLED with the status message</p>
+-    SLDS reports back to AmpronLED with the status message</p>
 <h2 id='general-view'>General View</h2>
-<p>Complete system is composed of the following components:</p>
+<p>The complete system is composed of the following components:</p>
 
 <ul>
 <li>Third Party Communication Module</li>
@@ -343,11 +348,11 @@ Additional requirements to the LED Displays control software will be inherited f
 <li>Communication Network</li>
 </ul>
 
-<p><strong>Third party communication module</strong> is responsible for sending control messages and receiving status messages corresponding to the format and syntax agreed in the chapters 4.2 and 5 of this document.</p>
+<p><strong>Third-party communication module</strong> is responsible for sending control messages and receiving status messages.</p>
 
-<p><strong>AmpronLED Software</strong> is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s). Messages format and syntax are described in the chapters 4.2 and 5 of this document.</p>
+<p><strong>AmpronLED Software</strong> is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s).</p>
 
-<p><em>Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are desicribed. Variants or other formats are agreed in Design Document production phase.</em></p>
+<p><em>Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are described.</em></p>
 
 <p><strong>SLDS Display Units</strong> are the visualization units (LED displays) which provide the visual results of communication between Third Party communication module and AmpronLED software.</p>
 
@@ -377,11 +382,11 @@ Additional requirements to the LED Displays control software will be inherited f
 </tr>
 <tr>
 <td><code>:port</code></td>
-<td>communication port which is listened by TPCM or AmpronLED,integer 1025…65535</td>
+<td>communication port which is listened by TPCM or AmpronLED, integer 1025…65535</td>
 </tr>
 <tr>
 <td><code>/mlds?</code></td>
-<td>resource request, constant string</td>
+<td>resource request, a constant string</td>
 </tr>
 <tr>
 <td><code>nameX=valueX</code></td>
@@ -405,16 +410,16 @@ Additional requirements to the LED Displays control software will be inherited f
 <li>Numbering</li>
 </ul>
 
-<p>Please see next chapter for details</p>
+<p>Please see the next chapter for details</p>
 <h2 id='variables-and-requests'>Variables and Requests</h2><h3 id='layouts'>Layouts</h3>
-<p>Layouts are configurable views of LED displays. There can be multiple layouts for every single display. However, from communications point of view, only one layout can be defined in a single GET request.</p>
+<p>Layouts are configurable views of LED displays. There can be multiple layouts for every single display. However, from the communications point of view, only one layout can be defined in a single GET request.</p>
 
 <p>Layouts are defined in config.json file, inside the block named “layouts”.</p>
 
 <p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;nameZ=valueZ&amp;inumber=XXXXX</code></p>
 <h2 id='areadata'>AreaData</h2>
-<p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in configuration file, then the request will be disregarded as faulty.
-If there are no pairs or less pairs than defined in Area configuration, the request will be handled as request for blank screen or blank area respectively. There are 3 types of AreaData (static text, live text and images):</p>
+<p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then the request will be disregarded as faulty.
+If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 3 types of AreaData (static text, live text and images):</p>
 
 <p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
 <h2 id='status-responses'>Status Responses</h2><h3 id='success'>Success</h3>
@@ -426,11 +431,11 @@ If there are no pairs or less pairs than defined in Area configuration, the requ
 
 <p><code>GET http://ipaddress:port/mlds?confirm=0&amp;inumber=XXXXX</code></p>
 <h3 id='fault'>Fault</h3>
-<p>AmpronLED software responds to faulty command by responding with HTTP GET.</p>
+<p>AmpronLED software responds to the faulty command by responding with HTTP GET.</p>
 
 <p><code>GET http://ipaddress:port/mlds?confirm=2&amp;inumber=XXXXX</code></p>
 <h2 id='addressing'>Addressing</h2>
-<p>There can be 99 MLDS units operated by one AmpronLED instance, usually multiple instances are used:</p>
+<p>There can be 99 MLDS units operated by one AmpronLED instance, usually, multiple instances are used:</p>
 
 <p>MLDS unit identifier -&gt; variable nameX is “id”, value is string max 255 chars</p>
 
@@ -438,15 +443,15 @@ If there are no pairs or less pairs than defined in Area configuration, the requ
 <h2 id='numbering'>Numbering</h2>
 <p>The numbering is done by TPCM (Third Party Communication Module), AmpronLED answers with the string provided by TPCM:</p>
 
-<p>Instructions sequence number -&gt; variable <code>nameX</code> is <code>inumber</code>, value is string of reasonable lenght</p>
+<p>Instructions sequence number -&gt; variable <code>nameX</code> is <code>inumber</code>, value is string of reasonable length</p>
 
 <p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
 <h2 id='encoding-of-url-query-parameters'>Encoding of URL Query Parameters</h2>
-<p>Characters from the unreserved set are represented as is without translation, other characters are converted to bytes according to UTF-8, and then percent-encoded.
+<p>Characters from the unreserved set are represented as-is without translation, other characters are converted to bytes according to UTF-8, and then percent-encoded.
 See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wikipedia Percent Encoding</a></p>
 <h1 id='configuration'>Configuration</h1>
-<p>Main configuration is set in a <code>config.json</code> file. Other configuration items are defined in various files and are linked to a main file according to specific needs.
-After changes to configuration files server needs to be restarted.</p>
+<p>The main configuration is set in a <code>config.json</code> file. Other configuration items are defined in various files and are linked to the main file according to specific needs.
+After changes to configuration, files server needs to be restarted.</p>
 <h2 id='configurable-items'>Configurable Items</h2><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9199"</span><span class="p">,</span><span class="w">
 
@@ -509,21 +514,21 @@ After changes to configuration files server needs to be restarted.</p>
 
 </span></code></pre>
 <ul>
-<li>Server listning port</li>
+<li>Server listening port</li>
 <li>Display group name</li>
 <li>Display ID</li>
 <li>Display IP and port</li>
-<li>Display metaname</li>
+<li>Display meta name</li>
 <li>Display controller type</li>
 <li>Feedback server IP and port</li>
 <li>Display height</li>
 <li>Display width</li>
 <li>Display layout</li>
 <li>Display areas</li>
-<li>Content type</li>
-<li>Text based content alignement</li>
-<li>Text based content font size</li>
-<li>Text based content font color</li>
+<li>Content-type</li>
+<li>Text-based content alignment</li>
+<li>Text-based content font size</li>
+<li>Text-based content font colour</li>
 <li>Picture based content parameters</li>
 </ul>
 <h2 id='listening-port'>Listening Port</h2><pre class="highlight json tab-json"><code><span class="w">
@@ -532,13 +537,13 @@ After changes to configuration files server needs to be restarted.</p>
 </span></code></pre>
 <p>Define the following value in <code>config.json</code> file:</p>
 
-<p><code>port</code>      -&gt; Numerical value within the range of from 1025 up to 65535</p>
+<p><code>port</code>        -&gt; Numerical value within the range of from 1025 up to 65535</p>
 <h2 id='displays-group'>Displays Group</h2><pre class="highlight json tab-json"><code><span class="s2">"displays"</span><span class="p">:</span><span class="w">
 </span></code></pre>
 <p><code>displays</code> Displays subgroup. Fixed value.</p>
 <h2 id='display-id'>Display ID</h2><pre class="highlight json tab-json"><code><span class="s2">"DISPLAYID"</span><span class="w">
 </span></code></pre>
-<p>First thing to do for adding new display is define following value in <code>config.json</code> file:</p>
+<p>The first thing to do for adding new display is defined following value in <code>config.json</code> file:</p>
 
 <p><code>Display ID</code> - String type unique value, up to 255 characters</p>
 
@@ -549,27 +554,27 @@ After changes to configuration files server needs to be restarted.</p>
 </span></code></pre>
 <p>Set the following value in <code>config.json</code> file:</p>
 
-<p><code>“displayIP“</code>       -&gt; In the form of standard IPv4 address
-<code>“displayPort“</code>     -&gt; Numerical value according to the specification</p>
+<p><code>“displayIP“</code>          -&gt; In the form of standard IPv4 address
+<code>“displayPort“</code>         -&gt; Numerical value according to the specification</p>
 <h2 id='display-metaname'>Display Metaname</h2><pre class="highlight json tab-json"><code><span class="w">
 </span><span class="s2">"displayName"</span><span class="p">:</span><span class="w">  </span><span class="s2">"anyname"</span><span class="p">,</span><span class="w">
 </span></code></pre>
 <p>Define the following value in <code>config.json</code> file:</p>
 
-<p><code>displayName</code>       -&gt; String type value, up to 255 characters</p>
+<p><code>displayName</code>        -&gt; String type value, up to 255 characters</p>
 <h2 id='display-controller-type'>Display Controller Type</h2><pre class="highlight json tab-json"><code><span class="s2">"controllerType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"G20"</span><span class="p">,</span><span class="w">
 </span></code></pre>
 <p>Define the following value in <code>config.json</code> file:</p>
 
-<p><code>controllerType</code>        -&gt; Display height in pixels</p>
+<p><code>controllerType</code>          -&gt; Display height in pixels</p>
 <h2 id='feedback-server-ip-and-port'>Feedback Server IP and port</h2><pre class="highlight json tab-json"><code><span class="w">
 </span><span class="s2">"confirmIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"confirmPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9092"</span><span class="p">,</span><span class="w">
 </span></code></pre>
 <p>Define the following value in <code>config.json</code> file:</p>
 
-<p><code>confirmIp</code>         -&gt; In the form of standard IPv4 address
-<code>confirmPort</code>       -&gt; Numerical value within the range 1025-&gt;65535</p>
+<p><code>confirmIp</code>          -&gt; In the form of standard IPv4 address
+<code>confirmPort</code>        -&gt; Numerical value within the range 1025-&gt;65535</p>
 <h2 id='display-size'>Display Size</h2><pre class="highlight json tab-json"><code><span class="s2">"displayHeight"</span><span class="p">:</span><span class="w">    </span><span class="s2">"160"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"displayWidth"</span><span class="p">:</span><span class="w">     </span><span class="s2">"96"</span><span class="p">,</span><span class="w">
 </span></code></pre>
@@ -577,7 +582,7 @@ After changes to configuration files server needs to be restarted.</p>
 
 <p><code>displayHeight</code>     -&gt; Display height in pixels</p>
 
-<p><code>displayWidth</code>      -&gt; Display width in pixels</p>
+<p><code>displayWidth</code>          -&gt; Display width in pixels</p>
 <h2 id='display-layout-management'>Display Layout Management</h2><pre class="highlight json tab-json"><code><span class="w">    </span><span class="s2">"layout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"layoutName"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"areaID"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -593,7 +598,7 @@ After changes to configuration files server needs to be restarted.</p>
 
 <p><code>areaID</code>        -&gt; String type of unique value, up to 255 characters</p>
 
-<p>Consider the values that makes sense in your overall system configuration.</p>
+<p>Consider the values that make sense in your overall system configuration.</p>
 <h2 id='area-coordinates'>Area Coordinates</h2><pre class="highlight json tab-json"><code><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 100 100"</span><span class="p">,</span><span class="w">
 </span></code></pre>
 <p>Define the following values in <code>config.json</code> file:</p>
@@ -638,10 +643,10 @@ Must physically fit into display area and no overlap with other areas.
 </span></code></pre>
 <p>Add following values:</p>
 
-<p><code>PICTUREID</code> -&gt; String type unique value, up to 255 characters
-<code>filename.gif</code>  -&gt; String type value, up to 255 characters fiename with the filename extension.</p>
+<p><code>PICTUREID</code>    -&gt; String type unique value, up to 255 characters
+<code>filename.gif</code>    -&gt; String type value, up to 255 characters fiename with the filename extension.</p>
 
-<p>All files must be locate in the catalogue <code>images/filename</code>, relative to <code>ampronled</code></p>
+<p>All files must be located in the catalogue <code>images/filename</code>, relative to <code>ampronled</code></p>
 <h3 id='freetext-parameters'>Freetext Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="w">
@@ -653,10 +658,10 @@ Must physically fit into display area and no overlap with other areas.
 <code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height
 <code>fontColor</code> -&gt; font color in RGB</p>
 <h2 id='monitoring-and-bite'>Monitoring and BITE</h2>
-<p>Our information system has built-in monitoring that monitors communications to the all displays that are added to configuration file. It also monitors the successful forwarding of the information packages and has the feedback loop to a feedback IP address.
-Information system monitors the last sent package success. If the feedback was the same then information is not sent again. After server restart, all active displays receive command to empty the content of the screen.</p>
+<p>Our information system has built-in monitoring that monitors communications to all displays that are added to the configuration file. It also monitors the successful forwarding of the information packages and has the feedback loop to a feedback IP address.
+Information system monitors the last sent package success. If the feedback was the same then information is not sent again. After server restart, all active displays receive the command to empty the content of the screen.</p>
 <h2 id='logging'>Logging</h2>
-<p>AmpronLED software logs all actions with timestamps. Logs are kept by default one month. Length may be set different according to a specific needs.</p>
+<p>AmpronLED software logs all actions with timestamps. Logs are kept by default one month. Length may be set different according to specific needs.</p>
 <h1 id='errors'>Errors</h1>
 <p>Ampron API uses the following error codes:</p>
 
