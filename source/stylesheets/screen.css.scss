@@ -59,8 +59,8 @@ html, body {
   bottom: 0;
   width: $nav-width;
   background-color: $nav-bg;
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 500;
 
   // language selector for mobile devices
   .lang-selector {
@@ -82,23 +82,23 @@ html, body {
     position: relative;
 
     input {
-      background: $nav-bg;
-      border-width: 0 0 1px 0;
+      background: #FFF;
+      border-width: 0 0 0 0;
       border-color: $search-box-border-color;
-      padding: 6px 0 6px 20px;
+      padding: 6px 6px 6px 30px;
       box-sizing: border-box;
       margin: $nav-v-padding $nav-padding;
       width: $nav-width - 30;
       outline: none;
-      color: $nav-text;
-      border-radius: 0; /* ios has a default border radius */
+      color: #3b414e;
+      border-radius: 3px; /* ios has a default border radius */
     }
 
     &:before {
       position: absolute;
       top: 17px;
-      left: $nav-padding;
-      color: $nav-text;
+      left: 24px;
+      color: #2e3336;
       @extend %icon-search;
     }
   }
@@ -166,13 +166,11 @@ html, body {
   .toc-list-h2 {
     display: none;
     background-color: $nav-subitem-bg;
-    font-weight: 500;
   }
 
   .toc-h2 {
     padding-left: $nav-padding + $nav-indent;
-    font-size: 12px;
-  }
+    }
 
   .toc-footer {
     padding: 1em 0;
@@ -189,7 +187,7 @@ html, body {
     }
 
     li {
-      font-size: 0.8em;
+      font-size: 1em;
       line-height: 1.7;
       text-decoration: none;
     }

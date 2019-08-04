@@ -1,11 +1,13 @@
 ---
-title: Ampron API
+title: Ampron LED Displays Communication Protocol API
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - json: JSON
 
 toc_footers:
-  - <a href='https://www.ampron.eu/#contact' target="_blank">Send Us Questions</a>
+  - <a href='https://www.ampron.eu/contact' target="_blank">See our products</a>
+  - <a href='https://github.com/AmpronLED/api/issues' target="_blank">Submit an issue</a>
+  - <a href="mailto:team@ampron.eu?subject=Question about API">Send Us Questions</a>
 
 includes:
   - errors
@@ -16,7 +18,7 @@ search: true
 # Introduction
 
 This document describes the main aspects for configuration and communication of Smart LED Display System provided by Ampron. The  purpose is to detail the configuration and communication protocol for the use by third party integrations of our displays.
-AmpronLED software is designed to drive and monitor the status of Smart LED Display Systems (SLDS) manufactured by Ampron. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.
+AmpronLED software is designed to drive and monitor the status of Ampron manufactured LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.
 
 Current API is composed to define the ways to configure and communicate with the software. General approach, method, syntax and semantics are defined in the following chapters.
 
@@ -38,7 +40,7 @@ Main Communication Process:
 -	AmpronLED sends data to Smart LED Display System (SLDS)
 
 **PHASE3**
--	SLDS reports back to TPCM through ApronLED with the status message
+-	SLDS reports back to AmpronLED with the status message
 
 ## General View
 
@@ -49,11 +51,11 @@ Complete system is composed of the following components:
 * SLDS Display Units
 * Communication Network
 
-**Third party communication module** is responsible for sending control messages and receiving status messages.
+**Third party communication module** is responsible for sending control messages and receiving status messages corresponding to the format and syntax agreed in the chapters 4.2 and 5 of this document.
 
-**AmpronLED Software** is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s).
+**AmpronLED Software** is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s). Messages format and syntax are described in the chapters 4.2 and 5 of this document.
 
-*Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are desicribed. Variants or other formats are agreed in Design Document during production phase.*
+*Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are desicribed. Variants or other formats are agreed in Design Document production phase.*
 
 **SLDS Display Units** are the visualization units (LED displays) which provide the visual results of communication between Third Party communication module and AmpronLED software.
 
@@ -67,14 +69,14 @@ Messaging between TPCM and AmpronLED is performed by using **HTTP GET** method i
 ### Syntax
 Control message format between TPCM and AmpronLED is HTTP Request:
 
-`GET http://ipaddress:port/slds?nameX=valueX&nameY=valueY&nameZ=valueZ`
+`GET http://ipaddress:port/mlds?nameX=valueX&nameY=valueY&nameZ=valueZ`
 
 |Message element|Description|
 |--------- | ------- |
 |`http://`|hypertext transfer protocol identifier, constant string|
 |`ipaddress`|IP address of the server where AmpronLED Software or TPCM is installed|
 |`:port`|communication port which is listened by TPCM or AmpronLED,integer 1025…65535|
-|`/slds?`|resource request, constant string
+|`/mlds?`|resource request, constant string
 |`nameX=valueX`|message pairs/AreaData, predefined alphanumeric pairs
 |`&`|separator, constant character
 
@@ -95,47 +97,47 @@ Please see next chapter for details
 ### Layouts 
 Layouts are configurable views of LED displays. There can be multiple layouts for every single display. However, from communications point of view, only one layout can be defined in a single GET request.
 
-Layouts are defined in config.json file, inside the block named “layout”.
+Layouts are defined in config.json file, inside the block named “layouts”.
 
-`GET http://ipaddress:port/slds?id=GATE_2&layout=vehiclenumber&nameZ=valueZ&inumber=XXXXX`
+`GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&nameZ=valueZ&inumber=XXXXX`
 
 ## AreaData 
 AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in configuration file, then the request will be disregarded as faulty.
 If there are no pairs or less pairs than defined in Area configuration, the request will be handled as request for blank screen or blank area respectively. There are 3 types of AreaData (static text, live text and images):
 
-`GET http://ipaddress:port/slds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
+`GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
 
 ## Status Responses 
 ### Success
 AmpronLED software confirms the successful control message execution by responding with HTTP GET.
 
-`GET http://ipaddress:port/slds?confirm=1&inumber=XXXXX`
+`GET http://ipaddress:port/mlds?confirm=1&inumber=XXXXX`
 
 ### Failed
 AmpronLED software responds with unsuccessful control message execution by responding with HTTP GET.
 
-`GET http://ipaddress:port/slds?confirm=0&inumber=XXXXX`
+`GET http://ipaddress:port/mlds?confirm=0&inumber=XXXXX`
 
 ### Fault
 AmpronLED software responds to faulty command by responding with HTTP GET.
 
 
-`GET http://ipaddress:port/slds?confirm=2&inumber=XXXXX`
+`GET http://ipaddress:port/mlds?confirm=2&inumber=XXXXX`
 
 ## Addressing 
-It is advised to use maximum 99 SLDS units operated by one AmpronLED instance, usually multiple instances are used if there are more SLDS units in the system:
+There can be 99 MLDS units operated by one AmpronLED instance, usually multiple instances are used:
 
-SLDS unit identifier -> variable nameX is “id”, value is string max 255 chars
+MLDS unit identifier -> variable nameX is “id”, value is string max 255 chars
 
-`GET http://ipaddress:port/slds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
+`GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
 
 ## Numbering 
 The numbering is done by TPCM (Third Party Communication Module), AmpronLED answers with the string provided by TPCM:
 
-Instructions sequence number -> variable `nameX` is `inumber`, value is string of reasonable lenght 
+Instructions sequence number -> variable `nameX` is `inumber`, value is string of reasonable lenght
 
 
-`GET http://ipaddress:port/slds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
+`GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
 
 ## Encoding of URL Query Parameters
 Characters from the unreserved set are represented as is without translation, other characters are converted to bytes according to UTF-8, and then percent-encoded.
@@ -382,7 +384,7 @@ If the chosen area type was chosen `static` then define section `texts` and add 
 
 `align` -> text alginment. Possible values `center` or `left`
 
-`fontsize` -> font size in pixels, must be smaller than area height
+`fontSize` -> font size in pixels, must be smaller than area height
 
 `fontColor` -> font color in RGB
 
@@ -405,7 +407,7 @@ Add following values:
 `PICTUREID`	-> String type unique value, up to 255 characters
 `filename.gif`	-> String type value, up to 255 characters fiename with the filename extension.
 
-All files must be locate in the catalogue `img/filename`, relative to `ampronled`
+All files must be locate in the catalogue `images/filename`, relative to `ampronled`
 
 ### Freetext Parameters
 
