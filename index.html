@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Ampron API</title>
+    <title>Ampron LED Displays Communication Protocol API</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -302,7 +302,9 @@
           </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='https://www.ampron.eu/#contact' target="_blank">Send Us Questions</a></li>
+            <li><a href='https://www.ampron.eu/contact' target="_blank">See our products</a></li>
+            <li><a href='https://github.com/AmpronLED/api/issues' target="_blank">Submit an issue</a></li>
+            <li><a href="mailto:team@ampron.eu?subject=Question about API">Send Us Questions</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -310,7 +312,7 @@
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
 <p>This document describes the main aspects for configuration and communication of Smart LED Display System provided by Ampron. The  purpose is to detail the configuration and communication protocol for the use by third party integrations of our displays.
-AmpronLED software is designed to drive and monitor the status of Smart LED Display Systems (SLDS) manufactured by Ampron. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.</p>
+AmpronLED software is designed to drive and monitor the status of Ampron manufactured LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.</p>
 
 <p>Current API is composed to define the ways to configure and communicate with the software. General approach, method, syntax and semantics are defined in the following chapters.</p>
 
@@ -330,7 +332,7 @@ Additional requirements to the LED Displays control software will be inherited f
 -   AmpronLED sends data to Smart LED Display System (SLDS)</p>
 
 <p><strong>PHASE3</strong>
--   SLDS reports back to TPCM through ApronLED with the status message</p>
+-   SLDS reports back to AmpronLED with the status message</p>
 <h2 id='general-view'>General View</h2>
 <p>Complete system is composed of the following components:</p>
 
@@ -341,23 +343,23 @@ Additional requirements to the LED Displays control software will be inherited f
 <li>Communication Network</li>
 </ul>
 
-<p><strong>Third party communication module</strong> is responsible for sending control messages and receiving status messages.</p>
+<p><strong>Third party communication module</strong> is responsible for sending control messages and receiving status messages corresponding to the format and syntax agreed in the chapters 4.2 and 5 of this document.</p>
 
-<p><strong>AmpronLED Software</strong> is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s).</p>
+<p><strong>AmpronLED Software</strong> is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s). Messages format and syntax are described in the chapters 4.2 and 5 of this document.</p>
 
-<p><em>Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are desicribed. Variants or other formats are agreed in Design Document during production phase.</em></p>
+<p><em>Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are desicribed. Variants or other formats are agreed in Design Document production phase.</em></p>
 
 <p><strong>SLDS Display Units</strong> are the visualization units (LED displays) which provide the visual results of communication between Third Party communication module and AmpronLED software.</p>
 
 <p><strong>Communication Network</strong> is considered to include all equipment and measures between TPCM, AmpronLED and SLDS Display Units.</p>
 
-<p><img src="images/Ampron_LED_Communication_Overview.png" alt="Ampron LED Communication Overview" /></p>
+<p><img src="images/images/Ampron_LED_Communication_Overview.png" alt="Ampron LED Communication Overview" /></p>
 <h2 id='method-syntax-and-semantics'>Method, Syntax and Semantics</h2><h3 id='method'>Method</h3>
 <p>Messaging between TPCM and AmpronLED is performed by using <strong>HTTP GET</strong> method in both directions.</p>
 <h3 id='syntax'>Syntax</h3>
 <p>Control message format between TPCM and AmpronLED is HTTP Request:</p>
 
-<p><code>GET http://ipaddress:port/slds?nameX=valueX&amp;nameY=valueY&amp;nameZ=valueZ</code></p>
+<p><code>GET http://ipaddress:port/mlds?nameX=valueX&amp;nameY=valueY&amp;nameZ=valueZ</code></p>
 
 <table><thead>
 <tr>
@@ -378,7 +380,7 @@ Additional requirements to the LED Displays control software will be inherited f
 <td>communication port which is listened by TPCM or AmpronLED,integer 1025…65535</td>
 </tr>
 <tr>
-<td><code>/slds?</code></td>
+<td><code>/mlds?</code></td>
 <td>resource request, constant string</td>
 </tr>
 <tr>
@@ -407,38 +409,38 @@ Additional requirements to the LED Displays control software will be inherited f
 <h2 id='variables-and-requests'>Variables and Requests</h2><h3 id='layouts'>Layouts</h3>
 <p>Layouts are configurable views of LED displays. There can be multiple layouts for every single display. However, from communications point of view, only one layout can be defined in a single GET request.</p>
 
-<p>Layouts are defined in config.json file, inside the block named “layout”.</p>
+<p>Layouts are defined in config.json file, inside the block named “layouts”.</p>
 
-<p><code>GET http://ipaddress:port/slds?id=GATE_2&amp;layout=vehiclenumber&amp;nameZ=valueZ&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;nameZ=valueZ&amp;inumber=XXXXX</code></p>
 <h2 id='areadata'>AreaData</h2>
 <p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in configuration file, then the request will be disregarded as faulty.
 If there are no pairs or less pairs than defined in Area configuration, the request will be handled as request for blank screen or blank area respectively. There are 3 types of AreaData (static text, live text and images):</p>
 
-<p><code>GET http://ipaddress:port/slds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
 <h2 id='status-responses'>Status Responses</h2><h3 id='success'>Success</h3>
 <p>AmpronLED software confirms the successful control message execution by responding with HTTP GET.</p>
 
-<p><code>GET http://ipaddress:port/slds?confirm=1&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?confirm=1&amp;inumber=XXXXX</code></p>
 <h3 id='failed'>Failed</h3>
 <p>AmpronLED software responds with unsuccessful control message execution by responding with HTTP GET.</p>
 
-<p><code>GET http://ipaddress:port/slds?confirm=0&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?confirm=0&amp;inumber=XXXXX</code></p>
 <h3 id='fault'>Fault</h3>
 <p>AmpronLED software responds to faulty command by responding with HTTP GET.</p>
 
-<p><code>GET http://ipaddress:port/slds?confirm=2&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?confirm=2&amp;inumber=XXXXX</code></p>
 <h2 id='addressing'>Addressing</h2>
-<p>It is advised to use maximum 99 SLDS units operated by one AmpronLED instance, usually multiple instances are used if there are more SLDS units in the system:</p>
+<p>There can be 99 MLDS units operated by one AmpronLED instance, usually multiple instances are used:</p>
 
-<p>SLDS unit identifier -&gt; variable nameX is “id”, value is string max 255 chars</p>
+<p>MLDS unit identifier -&gt; variable nameX is “id”, value is string max 255 chars</p>
 
-<p><code>GET http://ipaddress:port/slds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
 <h2 id='numbering'>Numbering</h2>
 <p>The numbering is done by TPCM (Third Party Communication Module), AmpronLED answers with the string provided by TPCM:</p>
 
-<p>Instructions sequence number -&gt; variable <code>nameX</code> is <code>inumber</code>, value is string of reasonable lenght </p>
+<p>Instructions sequence number -&gt; variable <code>nameX</code> is <code>inumber</code>, value is string of reasonable lenght</p>
 
-<p><code>GET http://ipaddress:port/slds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
 <h2 id='encoding-of-url-query-parameters'>Encoding of URL Query Parameters</h2>
 <p>Characters from the unreserved set are represented as is without translation, other characters are converted to bytes according to UTF-8, and then percent-encoded.
 See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wikipedia Percent Encoding</a></p>
@@ -621,7 +623,7 @@ Must physically fit into display area and no overlap with other areas.
 
 <p><code>align</code> -&gt; text alginment. Possible values <code>center</code> or <code>left</code></p>
 
-<p><code>fontsize</code> -&gt; font size in pixels, must be smaller than area height</p>
+<p><code>fontSize</code> -&gt; font size in pixels, must be smaller than area height</p>
 
 <p><code>fontColor</code> -&gt; font color in RGB</p>
 
@@ -639,7 +641,7 @@ Must physically fit into display area and no overlap with other areas.
 <p><code>PICTUREID</code> -&gt; String type unique value, up to 255 characters
 <code>filename.gif</code>  -&gt; String type value, up to 255 characters fiename with the filename extension.</p>
 
-<p>All files must be locate in the catalogue <code>img/filename</code>, relative to <code>ampronled</code></p>
+<p>All files must be locate in the catalogue <code>images/filename</code>, relative to <code>ampronled</code></p>
 <h3 id='freetext-parameters'>Freetext Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="w">
