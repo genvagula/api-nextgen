@@ -5,7 +5,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - json: JSON
 
 toc_footers:
-  - <a href='https://www.ampron.eu/contact' target="_blank">See our products</a>
+  - <a href='https://www.ampron.eu/products' target="_blank">See our products</a>
   - <a href='https://github.com/AmpronLED/api/issues' target="_blank">Submit an issue</a>
   - <a href="mailto:team@ampron.eu?subject=Question about API">Send Us Questions</a>
 
