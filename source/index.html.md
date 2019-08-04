@@ -1,15 +1,11 @@
 ---
-title: API Reference
+title: Ampron API
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
+  - json: JSON
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
+  - <a href='https://www.ampron.eu/#contact' target="_blank">Send Us Questions</a>
 
 includes:
   - errors
@@ -19,221 +15,419 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+This document describes the main aspects for configuration and communication of Smart LED Display System provided by Ampron. The  purpose is to detail the configuration and communication protocol for the use by third party integrations of our displays.
+AmpronLED software is designed to drive and monitor the status of Smart LED Display Systems (SLDS) manufactured by Ampron. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+Current API is composed to define the ways to configure and communicate with the software. General approach, method, syntax and semantics are defined in the following chapters.
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Communication protocol is defined to a level of technical detail which should assure clear understanding of how to drive, monitor and manage the software and displays. Communication methods and syntax are considered final and remain unchangeable without written agreement between both parties.
 
-# Authentication
+Following is structured in a way that at the left side you will see descriptions and at the right side are the example values.
 
-> To authorize, use this code:
+# Communication Protocol
 
-```ruby
-require 'kittn'
+This chapter is intended to describe the communication concept and protocol between Third Party Communication Module (TPCM) and AmpronLED software for operational environment. Communication protocol is closely related to the configuration of AmpronLED software.
+Additional requirements to the LED Displays control software will be inherited from the proposal or the Client specific Final Design Document (FDD), additionally some functionality will be modified, if needed, during design meetings.
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+Main Communication Process:
 
-```python
-import kittn
+**PHASE1**
+-	Third Party Communication Module (TPCM) sends control message to AmpronLED
 
-api = kittn.authorize('meowmeowmeow')
-```
+**PHASE2**
+-	AmpronLED sends data to Smart LED Display System (SLDS)
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+**PHASE3**
+-	SLDS reports back to TPCM through ApronLED with the status message
 
-```javascript
-const kittn = require('kittn');
+## General View
 
-let api = kittn.authorize('meowmeowmeow');
-```
+Complete system is composed of the following components:
 
-> Make sure to replace `meowmeowmeow` with your API key.
+* Third Party Communication Module
+* AmpronLED Software
+* SLDS Display Units
+* Communication Network
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+**Third party communication module** is responsible for sending control messages and receiving status messages.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+**AmpronLED Software** is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s).
 
-`Authorization: meowmeowmeow`
+*Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are desicribed. Variants or other formats are agreed in Design Document during production phase.*
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+**SLDS Display Units** are the visualization units (LED displays) which provide the visual results of communication between Third Party communication module and AmpronLED software.
 
-# Kittens
+**Communication Network** is considered to include all equipment and measures between TPCM, AmpronLED and SLDS Display Units.
 
-## Get All Kittens
+![Ampron LED Communication Overview]
+(images/Ampron_LED_Communication_Overview.png)
+## Method, Syntax and Semantics
+### Method
+Messaging between TPCM and AmpronLED is performed by using **HTTP GET** method in both directions.
+### Syntax
+Control message format between TPCM and AmpronLED is HTTP Request:
 
-```ruby
-require 'kittn'
+`GET http://ipaddress:port/slds?nameX=valueX&nameY=valueY&nameZ=valueZ`
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+|Message element|Description|
+|--------- | ------- |
+|`http://`|hypertext transfer protocol identifier, constant string|
+|`ipaddress`|IP address of the server where AmpronLED Software or TPCM is installed|
+|`:port`|communication port which is listened by TPCM or AmpronLED,integer 1025…65535|
+|`/slds?`|resource request, constant string
+|`nameX=valueX`|message pairs/AreaData, predefined alphanumeric pairs
+|`&`|separator, constant character
 
-```python
-import kittn
+### Semantics
+`nameX = valueX` - nameX is variable identifier and valueX is value of variable
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+There are five types of variables:
 
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+* Layouts
+* AreaData
+* Status responses 
+* Addressing
+* Numbering
 
-```javascript
-const kittn = require('kittn');
+Please see next chapter for details
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
+## Variables and Requests
+### Layouts 
+Layouts are configurable views of LED displays. There can be multiple layouts for every single display. However, from communications point of view, only one layout can be defined in a single GET request.
 
-> The above command returns JSON structured like this:
+Layouts are defined in config.json file, inside the block named “layout”.
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
+`GET http://ipaddress:port/slds?id=GATE_2&layout=vehiclenumber&nameZ=valueZ&inumber=XXXXX`
 
-This endpoint retrieves all kittens.
+## AreaData 
+AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in configuration file, then the request will be disregarded as faulty.
+If there are no pairs or less pairs than defined in Area configuration, the request will be handled as request for blank screen or blank area respectively. There are 3 types of AreaData (static text, live text and images):
 
-### HTTP Request
+`GET http://ipaddress:port/slds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
 
-`GET http://example.com/api/kittens`
+## Status Responses 
+### Success
+AmpronLED software confirms the successful control message execution by responding with HTTP GET.
 
-### Query Parameters
+`GET http://ipaddress:port/slds?confirm=1&inumber=XXXXX`
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+### Failed
+AmpronLED software responds with unsuccessful control message execution by responding with HTTP GET.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+`GET http://ipaddress:port/slds?confirm=0&inumber=XXXXX`
 
-## Get a Specific Kitten
+### Fault
+AmpronLED software responds to faulty command by responding with HTTP GET.
 
-```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+`GET http://ipaddress:port/slds?confirm=2&inumber=XXXXX`
 
-```python
-import kittn
+## Addressing 
+It is advised to use maximum 99 SLDS units operated by one AmpronLED instance, usually multiple instances are used if there are more SLDS units in the system:
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+SLDS unit identifier -> variable nameX is “id”, value is string max 255 chars
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+`GET http://ipaddress:port/slds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
 
-```javascript
-const kittn = require('kittn');
+## Numbering 
+The numbering is done by TPCM (Third Party Communication Module), AmpronLED answers with the string provided by TPCM:
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
+Instructions sequence number -> variable `nameX` is `inumber`, value is string of reasonable lenght 
 
-> The above command returns JSON structured like this:
+
+`GET http://ipaddress:port/slds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
+
+## Encoding of URL Query Parameters
+Characters from the unreserved set are represented as is without translation, other characters are converted to bytes according to UTF-8, and then percent-encoded.
+See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wikipedia Percent Encoding</a>
+
+# Configuration
+
+Main configuration is set in a `config.json` file. Other configuration items are defined in various files and are linked to a main file according to specific needs.
+After changes to configuration files server needs to be restarted.
+
+## Configurable Items
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+    "port": "9199",
+
+    "displays": {
+        "GATE_OUT2": {
+            
+	    "displayName": "anyname",
+	    "displayIp": "192.168.100.100",
+            "displayPort": "9551",
+            "controllerType": "T430",
+
+            "confirmIp": "127.0.0.1",
+            "confirmPort": "9098",
+            
+            "displayHeight": "160",
+            "displayWidth": "96",
+            
+            "layout": {
+            	"vehicle": {
+            		"numberplate": {
+            			"coordinates": "0 0 100 29",
+            			"type": "text",
+				"align": "center",
+            			"fontSize": "24",
+            			"fontColor": "255 255 255"
+            		},
+            		"infotext": {
+            			"coordinates": "0 30 100 69",
+            			"type": "static",
+            			"align": "center",
+            			"fontSize": "24",
+            			"fontColor": "255 255 255",
+                		"params": {
+                			"21": "Some static text"
+                		}
+            		},
+            		"arrow": {
+            			"coordinates": "0 70 100 100",
+            			"type": "image",
+                		"params": {
+                			"S": "fwd.bmp",
+                			"RE": "left.bmp"
+                		}
+            		}
+            	},
+            	"message": {
+            		"all": {
+            			"coordinates": "0 0 100 100",
+            			"type": "image",
+                		"params": {
+                			"WAIT": "pleasewait.bmp",
+                			"CLOSED": "closed.bmp"
+                		}
+            		}
+            	}
+            }
+        }
+    }
 }
+
 ```
+- Server listning port
+- Display group name
+- Display ID
+- Display IP and port
+- Display metaname
+- Display controller type
+- Feedback server IP and port
+- Display height
+- Display width
+- Display layout
+- Display areas
+- Content type
+- Text based content alignement
+- Text based content font size
+- Text based content font color
+- Picture based content parameters
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
+## Listening Port
 
 ```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
+
+"port":  "9090",
+
 ```
 
-This endpoint deletes a specific kitten.
+Define the following value in `config.json` file:
 
-### HTTP Request
+`port`		-> Numerical value within the range of from 1025 up to 65535
 
-`DELETE http://example.com/kittens/<ID>`
+## Displays Group
+ 
+```json
+"displays":
+```
+`displays` Displays subgroup. Fixed value.
 
-### URL Parameters
+## Display ID
+ 
+```json
+"DISPLAYID"
+```
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+First thing to do for adding new display is define following value in `config.json` file:
 
+`Display ID` - String type unique value, up to 255 characters
+
+Replace default DISPLAYID with your own unique display ID name.
+
+## Display IP and Port
+
+```json
+
+"displayIp":    "192.168.200.200",
+"displayPort":  "10000",
+```
+Set the following value in `config.json` file:
+
+`“displayIP“` 	 	-> In the form of standard IPv4 address
+`“displayPort“`	 	-> Numerical value according to the specification
+
+## Display Metaname
+
+```json
+
+"displayName":  "anyname",
+```
+
+Define the following value in `config.json` file:
+
+`displayName`		-> String type value, up to 255 characters
+
+## Display Controller Type
+
+```json
+"controllerType": "G20",
+```
+
+Define the following value in `config.json` file:
+
+`controllerType` 	 	-> Display height in pixels
+
+## Feedback Server IP and port
+
+```json
+
+"confirmIp": "127.0.0.1",
+"confirmPort": "9092",
+```
+
+Define the following value in `config.json` file:
+
+`confirmIp` 	 	-> In the form of standard IPv4 address
+`confirmPort`		-> Numerical value within the range 1025->65535
+
+## Display Size
+
+```json
+"displayHeight":    "160",
+"displayWidth":     "96",
+```
+
+Define the following values in `config.json` file:
+
+`displayHeight`     -> Display height in pixels
+
+`displayWidth` 	 	-> Display width in pixels
+
+## Display Layout Management
+
+```json
+    "layout": {
+        "layoutName": {
+            "areaID": {
+                    
+                            }
+                    }
+                }      
+                            
+```
+
+Define the following value in `config.json` file:
+
+`layoutName`    -> String type value, up to 255 characters
+
+`areaID`		-> String type of unique value, up to 255 characters
+
+Consider the values that makes sense in your overall system configuration.
+
+
+## Area Coordinates
+
+```json
+"coordinates": "0 0 100 100",
+```
+
+Define the following values in `config.json` file:
+
+`coordinates`    -> Area coordinates in pixels (x y X Y)
+
+<aside class="warning">
+Must physically fit into display area and no overlap with other areas.
+</aside>
+
+*x,y - square area upper left corner.*
+
+*X,Y - square area lower right corner.*
+
+## Area Types
+
+```json
+"type": "static",
+```
+
+Define the following values in `config.json` file:
+
+`type`           -> Possible values - `static`, `text` or `image`
+
+### Static Text Variables
+
+```json
+"align": "center",
+           "fontSize": "24",
+           "fontColor": "255 255 255",
+           "params": {
+                		"TEXTID": "text"
+                     }
+```
+
+If the chosen area type was chosen `static` then define section `texts` and add following variables:
+
+`align` -> text alginment. Possible values `center` or `left`
+
+`fontsize` -> font size in pixels, must be smaller than area height
+
+`fontColor` -> font color in RGB
+
+`params` -> parameters subgroup. Fixed value.
+
+`TEXTID` -> String type value, up to 255 characters
+
+`text` -> Text to be displayed, up to 255 characters
+
+### Picture Parameters
+
+```json
+"params": {
+            "PICTUREID": "filename1.gif",
+          }
+```
+
+Add following values:
+
+`PICTUREID`	-> String type unique value, up to 255 characters
+`filename.gif`	-> String type value, up to 255 characters fiename with the filename extension.
+
+All files must be locate in the catalogue `img/filename`, relative to `ampronled`
+
+### Freetext Parameters
+
+```json
+"align": "center",
+"fontSize": "24",
+"fontColor": "255 255 255"
+
+```
+
+If the chosen area type was chosen `text` then define following variables:
+
+`align`     -> text alginment. Possible values `center` or `left`. Valid only when text fits into area.
+`fontSize`  -> font size in pixels, must be smaller than area height
+`fontColor` -> font color in RGB
+
+
+## Monitoring and BITE
+
+Our information system has built-in monitoring that monitors communications to the all displays that are added to configuration file. It also monitors the successful forwarding of the information packages and has the feedback loop to a feedback IP address.
+Information system monitors the last sent package success. If the feedback was the same then information is not sent again. After server restart, all active displays receive command to empty the content of the screen.
+
+## Logging
+
+AmpronLED software logs all actions with timestamps. Logs are kept by default one month. Length may be set different according to a specific needs.
