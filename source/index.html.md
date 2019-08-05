@@ -99,7 +99,7 @@ Please see the next chapter for details
 ### Layouts 
 Layouts are configurable views of LED displays. There can be multiple layouts for every single display. However, from the communications point of view, only one layout can be defined in a single GET request.
 
-Layouts are defined in config.json file, inside the block named “layouts”.
+Layouts are defined in config.json file, inside the block named “layout”.
 
 `GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&nameZ=valueZ&inumber=XXXXX`
 
