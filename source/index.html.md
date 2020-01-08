@@ -193,8 +193,8 @@ After changes to configuration, files server needs to be restarted.
                         "coordinates": "0 70 100 100",
                         "type": "image",
                         "params": {
-                            "S": "fwd.bmp",
-                            "RE": "left.bmp"
+                            "S": "fwd.png",
+                            "RE": "left.png"
                         }
                     }
                 },
@@ -203,8 +203,8 @@ After changes to configuration, files server needs to be restarted.
                         "coordinates": "0 0 100 100",
                         "type": "image",
                         "params": {
-                            "WAIT": "pleasewait.bmp",
-                            "CLOSED": "closed.bmp"
+                            "WAIT": "pleasewait.png",
+                            "CLOSED": "closed.png"
                         }
                     }
                 }
