@@ -5,12 +5,12 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - json: JSON
 
 toc_footers:
-  - <a href='https://www.ampron.eu/products' target="_blank">See our products</a>
-  - <a href='https://github.com/AmpronLED/api/issues' target="_blank">Submit an issue</a>
+  - <a href='https://ampron.eu/article/direction-and-amount-of-free-parking-spaces-led-signs/' target="_blank">See sample use case</a>
   - <a href="mailto:team@ampron.eu?subject=Question about API">Send Us Questions</a>
 
 includes:
   - errors
+  - howto
 
 search: true
 ---
@@ -256,7 +256,7 @@ Define the following value in `config.json` file:
 "DISPLAYID"
 ```
 
-The first thing to do for adding new display is defined following value in `config.json` file:
+The first thing to do for adding new display is defining following value in `config.json` file:
 
 `Display ID` - String type unique value, up to 255 characters
 
@@ -293,7 +293,7 @@ Define the following value in `config.json` file:
 
 Define the following value in `config.json` file:
 
-`controllerType`          -> Display height in pixels
+`controllerType`          -> controller model
 
 ## Feedback Server IP and port
 
@@ -407,7 +407,7 @@ If the chosen area type was chosen `static` then define section `texts` and add 
 Add following values:
 
 `PICTUREID`    -> String type unique value, up to 255 characters
-`filename.gif`    -> String type value, up to 255 characters fiename with the filename extension.
+`filename.gif`    -> String type value, up to 255 characters filename with the filename extension.
 
 All files must be located in the catalogue `images/filename`, relative to `ampronled`
 
