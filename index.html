@@ -305,10 +305,35 @@
           <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="errors">Errors</a>
           </li>
+          <li>
+            <a href="#how-to-features" class="toc-h1 toc-link" data-title="how-to-features">How To (Features)</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#brightness-control" class="toc-h2 toc-link" data-title="brightness-control">Brightness control</a>
+                  </li>
+                  <li>
+                    <a href="#configuration" class="toc-h2 toc-link" data-title="configuration">Configuration</a>
+                  </li>
+                  <li>
+                    <a href="#define-different-play-styles" class="toc-h2 toc-link" data-title="define-different-play-styles">Define different play-styles</a>
+                  </li>
+                  <li>
+                    <a href="#define-text-colour" class="toc-h2 toc-link" data-title="define-text-colour">Define text colour</a>
+                  </li>
+                  <li>
+                    <a href="#set-and-change-scroll-speed" class="toc-h2 toc-link" data-title="set-and-change-scroll-speed">Set and change scroll-speed</a>
+                  </li>
+                  <li>
+                    <a href="#set-text-background-colour" class="toc-h2 toc-link" data-title="set-text-background-colour">Set text background colour</a>
+                  </li>
+                  <li>
+                    <a href="#windows-command-line-options" class="toc-h2 toc-link" data-title="windows-command-line-options">Windows command line options</a>
+                  </li>
+              </ul>
+          </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='https://www.ampron.eu/products' target="_blank">See our products</a></li>
-            <li><a href='https://github.com/AmpronLED/api/issues' target="_blank">Submit an issue</a></li>
+            <li><a href='https://ampron.eu/article/direction-and-amount-of-free-parking-spaces-led-signs/' target="_blank">See sample use case</a></li>
             <li><a href="mailto:team@ampron.eu?subject=Question about API">Send Us Questions</a></li>
         </ul>
     </div>
@@ -543,7 +568,7 @@ After changes to configuration, files server needs to be restarted.</p>
 <p><code>displays</code> Displays subgroup. Fixed value.</p>
 <h2 id='display-id'>Display ID</h2><pre class="highlight json tab-json"><code><span class="s2">"DISPLAYID"</span><span class="w">
 </span></code></pre>
-<p>The first thing to do for adding new display is defined following value in <code>config.json</code> file:</p>
+<p>The first thing to do for adding new display is defining following value in <code>config.json</code> file:</p>
 
 <p><code>Display ID</code> - String type unique value, up to 255 characters</p>
 
@@ -566,7 +591,7 @@ After changes to configuration, files server needs to be restarted.</p>
 </span></code></pre>
 <p>Define the following value in <code>config.json</code> file:</p>
 
-<p><code>controllerType</code>          -&gt; Display height in pixels</p>
+<p><code>controllerType</code>          -&gt; controller model</p>
 <h2 id='feedback-server-ip-and-port'>Feedback Server IP and port</h2><pre class="highlight json tab-json"><code><span class="w">
 </span><span class="s2">"confirmIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"confirmPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9092"</span><span class="p">,</span><span class="w">
@@ -644,7 +669,7 @@ Must physically fit into display area and no overlap with other areas.
 <p>Add following values:</p>
 
 <p><code>PICTUREID</code>    -&gt; String type unique value, up to 255 characters
-<code>filename.gif</code>    -&gt; String type value, up to 255 characters fiename with the filename extension.</p>
+<code>filename.gif</code>    -&gt; String type value, up to 255 characters filename with the filename extension.</p>
 
 <p>All files must be located in the catalogue <code>images/filename</code>, relative to <code>ampronled</code></p>
 <h3 id='freetext-parameters'>Freetext Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
@@ -708,6 +733,162 @@ Information system monitors the last sent package success. If the feedback was t
 <td>Service Unavailable -- Server temporarily offline. Please contact support.</td>
 </tr>
 </tbody></table>
+<h1 id='how-to-features'>How To (Features)</h1><h2 id='brightness-control'>Brightness control</h2><h3 id='it-is-possible-to-change-the-brightness-of-the-display-in-6-different-ways'>It is possible to change the brightness of the display in 6 different ways:</h3><h3 id='1-automatic-daylight'>1. Automatic daylight</h3>
+<p>This is the default mode, brightness is changed between 50% and 100% automatically. Time of change is defined by sunset and sunrise with an accuracy of 2 weeks, example:
+in the first half of May, the daytime starts later than in the second half of May and in the first half of June later than in the second half of May etc. Default sunset times are taken for local longitude and latitude.</p>
+<h3 id='2-automatic-daylight-specific-location'>2. Automatic daylight, specific location</h3>
+<p>With this mode, it is possible to define the sunrise and sunset times and also relevant brightness %, for each half months.
+To use this feature, it is needed to add a specific brightness-schedule.json file to ampronled directory (with X permissions), if the file is present then it is used, if not then default schedule is used).</p>
+<h3 id='3-manual-brightness-for-a-single-screen'>3. Manual brightness for a single screen</h3>
+<p>To enable manual brightness setting feature, define the following parameter at <code>&quot;displayIP&quot;</code> level:</p>
+
+<p><code>&quot;sensorBrightness&quot;: true</code>,</p>
+
+<p>To use this feature send HTTP GET command to the ampronled software:</p>
+
+<p><code>http://ampronledIP:port/brightness/VALUE?id=DISPLAY_ID</code></p>
+
+<p>VALUE can be from 1 to 100</p>
+<h3 id='4-manual-brightness-for-all-screens'>4. Manual brightness for all screens</h3>
+<p>To enable manual brightness setting feature, define the following parameter at <code>&quot;controllerIP&quot;</code> level to all screens:</p>
+
+<p><code>&quot;sensorBrightness&quot;: true</code>,</p>
+
+<p>To use this feature send HTTP GET command to the ampronled software:</p>
+
+<p><code>http://ampronledIP:port/brightness/VALUE</code></p>
+<h3 id='5-automatic-brightness-from-hw-sensor-for-a-single-screen'>5. Automatic brightness from HW sensor for a single screen</h3>
+<p>To enable automatic brightness setting from HW sensor feature, the additional hardware unit should be installed inside every screen. The ambient lighting is measured at every screen and the brightness is adjusted automatically without server interference. Relevant configuration should also be done to screen controller and in the ampronled configuration file following parameter at <code>&quot;controllerIP&quot;</code> level to all screens shall be defined.</p>
+<h3 id='6-automatic-brightness-from-separately-located-hw-sensor-or-multiple-sensors-to-all-or-some-specific-screens'>6. Automatic brightness from separately located HW sensor or multiple sensors to all or some specific screens</h3>
+<p>To enable automatic brightness setting from single or multiple HW sensors, the additional hardware unit/units should be installed. The ambient lighting is measured at a specific location(s) compared in accordance with the defined algorithm and then the brightness information is sent to all screens or specifically selected screens. Relevant configurations must be done to ampronled configuration file and HW sensor units, as well as agreed algorithms, defined. This is usually done by Ampron technicians during the design phase.</p>
+<h3 id='7-advanced-automatic-brightness-management'>7. Advanced automatic brightness management</h3>
+<p>It is possible to manipulate different types of data to manage the brightness of screens eg.open web RSS feeds, parsing XML, using MODBUS/TCP etc. This feature requires additional Ampron Monitoring Module hardware unit and Ampron Monitoring Software.</p>
+<h2 id='configuration'>Configuration</h2><h3 id='description'>Description</h3>
+<p>The main configuration is set in a <code>config.json</code> file. Other configuration items are defined in various files and are linked to the main file according to specific needs.</p>
+
+<p><code>AFTER CHANGES TO THE CONFIGURATION, THE FILE SERVER NEEDS TO BE RESTARTED FOR CHANGES TO TAKE EFFECT</code></p>
+<h3 id='configurable-items'>Configurable Items</h3>
+<ul>
+<li>Server listening port</li>
+<li>Display group name</li>
+<li>Display ID</li>
+<li>Display IP and port</li>
+<li>Display meta name</li>
+<li>Display controller type</li>
+<li>Feedback server IP and port</li>
+<li>Display height</li>
+<li>Display width</li>
+<li>Display layout</li>
+<li>Display areas</li>
+<li>Content-type</li>
+<li>Text-based content alignment</li>
+<li>Text-based content font size</li>
+<li>Text-based content font colour</li>
+<li>Picture based content parameters</li>
+</ul>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9199"</span><span class="p">,</span><span class="w">
+
+    </span><span class="s2">"displays"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"GATE_OUT2"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+
+        </span><span class="s2">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"anyname"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"displayIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.100"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"displayPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9551"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"controllerType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"T430"</span><span class="p">,</span><span class="w">
+
+            </span><span class="s2">"confirmIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"confirmPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9098"</span><span class="p">,</span><span class="w">
+
+            </span><span class="s2">"displayHeight"</span><span class="p">:</span><span class="w"> </span><span class="s2">"160"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"displayWidth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"96"</span><span class="p">,</span><span class="w">
+
+            </span><span class="s2">"layout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"vehicle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"numberplate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 100 29"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"infotext"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 30 100 69"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"static"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"21"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Some static text"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"arrow"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 70 100 100"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"S"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fwd.png"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"RE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"left.png"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"all"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 100 100"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"WAIT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pleasewait.png"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"CLOSED"</span><span class="p">:</span><span class="w"> </span><span class="s2">"closed.png"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre><h2 id='define-different-play-styles'>Define different play-styles</h2>
+<p>It is possible to define different playstyles for areas. The functionality comprises of two features, <code>&quot;dispEffect&quot;</code> and <code>&quot;clearEffect&quot;</code>.
+dispEffect defines how the text enters into the area while clearEffect defines how it leaves eg. text enters from up to down and leaves the area from down and up again. there are 15 different entry and exit effects which can be combined.</p>
+
+<p>To enable different playstyles, define following parameters under <code>&quot;text&quot;</code> area in configuration file:</p>
+
+<p><code>&quot;dispEffect&quot;:&quot;VALUE1&quot;</code>, VALUE1 - 1...15<code>&quot;clearEffect&quot;:&quot;VALUE2&quot;</code>, VALUE2 - 1...15</p>
+
+<p>VALUE1 and VALUE2 can be different</p>
+<h2 id='define-text-colour'>Define text colour</h2>
+<p>For <code>&quot;text&quot;</code> and &quot;static&quot; areas, it is possible to define font colour also with the GET request.</p>
+
+<p><code>http://ampronledIP:port/mlds?id=DISPLAY_ID&amp;layout=LAYOUT_NAME&amp;AREA_NAME=HELLO&amp;fontColor[AREA_NAME]=0_255_255</code></p>
+
+<p>where 0_255_255 is the colour of the text in RGB</p>
+<h2 id='set-and-change-scroll-speed'>Set and change scroll-speed</h2>
+<p>Define parameter:</p>
+
+<p><code>&quot;scrollSpeed&quot;: &quot;VALUE&quot;,</code> VALUE - 0...8, 0-fastest and 8-slowest</p>
+
+<p>if the parameter is not defined then default scroll speed is 4</p>
+<h2 id='set-text-background-colour'>Set text background colour</h2>
+<p>It is possible to define the background colour of <code>&quot;text&quot;</code> and <code>&quot;static&quot;</code> areas text.</p>
+
+<p>To set the background colour of text, define the following parameter under the relevant area:</p>
+
+<p><code>&quot;backgroundColor&quot;: &quot;0 255 255&quot;</code>, whereas <code>&quot;0 255 255&quot;</code> is the color of text background in RGB.</p>
+
+<p>It is also possible to define an alpha channel for this feature, <code>&quot;backgroundColor&quot;: &quot;0 255 255 127&quot;</code>, whereas 127 is alpha channel value 0...127</p>
+<h2 id='windows-command-line-options'>Windows command line options</h2>
+<p>Usage: ampronled-mlds-2.1.35-win.exe [options] [command]</p>
+
+<p>Commands:</p>
+
+<p><code>start [options]</code> - Start server.</p>
+
+<p><code>test</code> - Testing.</p>
+
+<p>Options:</p>
+
+<p><code>-h</code>, <code>--help</code> output usage information</p>
+
+<p><code>-V</code>, <code>--version</code>  output the version number</p>
 
       </div>
       <div class="dark-box">
