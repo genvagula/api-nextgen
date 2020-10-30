@@ -19,65 +19,66 @@ search: true
 
 The purpose is to describe the configuration of Ampron LED display communication protocol. 
 
-## AmpronLED software
+## AmpronLED NextGen software
 
-AmpronLED software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.
+AmpronLED NextGen software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.
 
 Current API defines the ways of configuring and communicating with the software. The general approach, method, syntax and semantics are described in the following chapters.
 
 The communication protocol is defined to a level of technical detail which should assure a clear understanding of how to drive, monitor and manage the software and displays.
 
-Following is a structured in a way that at the left side you will see descriptions and at the right side are the example values.
+Following is structured in a way that at the left side you will see descriptions and at the right side are the example values.
 
 # Communication Protocol
 
-This chapter is intended to describe the communication concept and protocol between Third Party Communication Module (TPCM) and AmpronLED software for the operational environment. The communication protocol is closely related to the configuration of AmpronLED software.
+This chapter is intended to describe the communication concept and protocol between Third Party Communication Module (TPCM) and AmpronLED NextGen software for the operational environment. The communication protocol is closely related to the configuration of AmpronLED NextGen software.
 
 Main Communication Process:
 
 **PHASE1**
--    Third-Party Communication Module (TPCM) sends a control message to AmpronLED
+-    Third-Party Communication Module (TPCM) sends a control message to AmpronLED NextGen
 
 **PHASE2**
--    AmpronLED sends data to the Smart LED Display System (SLDS)
+-    AmpronLED NextGen visualises data on the Smart LED Display System (SLDS)
 
 **PHASE3**
--    SLDS reports back to AmpronLED with the status message
+-    AmpronLED NextGen makes feedback messages available for parsing
 
 ## General View
 
 The complete system is composed of the following components:
 
 * Third Party Communication Module
-* AmpronLED Software
-* SLDS Display Units
+* AmpronLED NextGen Software running inside of SLDS Display Units
 * Communication Network
 
-**Third-party communication module** is responsible for sending control messages and receiving status messages.
+**Third-party communication module** is responsible for sending control messages and polling status messages.
 
-**AmpronLED Software** is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s).
+**AmpronLED NextGen Software** is responsible for receiving the control messages from TPCM, creating status messages for TPCM and visualising content on SLDS Unit(s).
 
 *Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are described.*
 
-**SLDS Display Units** are the visualization units (LED displays) which provide the visual results of communication between Third Party communication module and AmpronLED software.
+**SLDS Display Units** are the visualization units (LED, LCD/TFT or VMS displays) which provide the visual results of communication between Third Party communication module and AmpronLED NextGen software.
 
-**Communication Network** is considered to include all equipment and measures between TPCM, AmpronLED and SLDS Display Units.
+**Communication Network** is considered to include all equipment and measures between TPCM and SLDS Display Units.
 
 ![Ampron LED Communication Overview]
-(images/Ampron_LED_Communication_Overview.png)
+(images/Ampron_LED_Communication_Overview_NextGen.png) 
+
 ## Method, Syntax and Semantics
 ### Method
-Messaging between TPCM and AmpronLED is performed by using **HTTP GET** method in both directions.
+Messaging between TPCM and AmpronLED NEXTGEN is performed by using **HTTP GET** method.
+
 ### Syntax
-Control message format between TPCM and AmpronLED is HTTP Request:
+Control message format between TPCM and AmpronLED NextGen is HTTP Request:
 
 `GET http://ipaddress:port/mlds?nameX=valueX&nameY=valueY&nameZ=valueZ`
 
 |Message element|Description|
 |--------- | ------- |
 |`http://`|hypertext transfer protocol identifier, constant string|
-|`ipaddress`|IP address of the server where AmpronLED Software or TPCM is installed|
-|`:port`|communication port which is listened by TPCM or AmpronLED, integer 1025…65535|
+|`ipaddress`|IP address of the SLDS running AmpronLED NextGen software|
+|`:port`|communication port which is listened by AmpronLED NextGen, integer 1025…65535|
 |`/mlds?`|resource request, a constant string
 |`nameX=valueX`|message pairs/AreaData, predefined alphanumeric pairs
 |`&`|separator, constant character
@@ -104,42 +105,35 @@ Layouts are defined in config.json file, inside the block named “layout”.
 `GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&nameZ=valueZ&inumber=XXXXX`
 
 ## AreaData 
-AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then the request will be disregarded as faulty.
-If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 3 types of AreaData (static text, live text and images):
+AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then they will be disregarded as faulty.
+If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 6 types of AreaData (static text, live text, images, date&time, video and images):
 
 `GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
 
 ## Status Responses 
-### Success
-AmpronLED software confirms the successful control message execution by responding with HTTP GET.
+### Command Status
+AmpronLED NextGen software confirms synchronously with OK if the HTTP GET request is received and does not contain forbidden elements.
+AmpronLED NextGen software confirms the last control message status by visualising it at:
 
-`GET http://ipaddress:port/mlds?confirm=1&inumber=XXXXX`
+`http://ipaddress:port/info`
 
-### Failed
-AmpronLED software responds with unsuccessful control message execution by responding with HTTP GET.
+### Configuration Status 
+AmpronLED NextGen software confirms the last configuration check result by visualising it at:
 
-`GET http://ipaddress:port/mlds?confirm=0&inumber=XXXXX`
+`http://ipaddress:port/info`
 
-### Fault
-AmpronLED software responds to the faulty command by responding with HTTP GET.
+### Network configuration
+AmpronLED NextGen software current network configuration is visible at:
 
-
-`GET http://ipaddress:port/mlds?confirm=2&inumber=XXXXX`
+`http://ipaddress:port/getethernetconfig`
 
 ## Addressing 
-There can be 99 MLDS units operated by one AmpronLED instance, usually, multiple instances are used:
+There can be 1 SLDS unit operated by one AmpronLED NextGen instance, however multiple id-s can be present in config.json:
 
 MLDS unit identifier -> variable nameX is “id”, value is string max 255 chars
 
 `GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
 
-## Numbering 
-The numbering is done by TPCM (Third Party Communication Module), AmpronLED answers with the string provided by TPCM:
-
-Instructions sequence number -> variable `nameX` is `inumber`, value is string of reasonable length
-
-
-`GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC&inumber=XXXXX`
 
 ## Encoding of URL Query Parameters
 Characters from the unreserved set are represented as-is without translation, other characters are converted to bytes according to UTF-8, and then percent-encoded.
@@ -147,8 +141,46 @@ See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wik
 
 # Configuration
 
-The main configuration is set in a `config.json` file. Other configuration items are defined in various files and are linked to the main file according to specific needs.
-After changes to configuration, files server needs to be restarted.
+## Main
+The main configuration is set in a `config.json` file. Other configuration items are defined in various files and are linked to the main file according to specific needs using referencing.
+
+## Uploading configuration
+After changes to configuration, configuration files must: (a) be uploaded to SLDS via SFTP or (b)zipped and made available to be reached at desired URL. To download configuration files to SLDS, relevant HTTP GET command must be given:
+
+`http://ipaddress:port/load_config?url=http://URL/conf.zip
+
+## Activation of new configuration
+
+Configuration is checked every 3000 seconds and activated automatically, to force check use HTTP GET command:
+
+`http://ipaddress:port/reload_config`
+
+After configuration change, check the status at:
+
+`http://ipaddress:port/info`
+
+If errors are detected in configuration files, they are disregarded and relevant information is shown on the above link.
+
+## Managing brightness manually
+
+LED Screen brightness can be managed manually by sending HTTP GET request with desired value 0...100:
+
+`http://ampronledIP:port/brightness/VALUE`
+ 
+NOTE! To disable internal brightness scheduler to avoid it from overriding the manual value define in config.json:
+
+"sensorBrightness": true,
+
+## Changing Network configuration
+
+To change network configuration and enable/disable DHCP use commands (NB! remember, this should be used only if one id is defined in config.json):
+
+`http://OLDipaddress:port/setethernetconfig?dhcp=true&ip=NEWipaddress&netmask=NEWnetmaskip&gateway=NEWgatewayip&dns=NEWdnsip` 
+
+to check status:
+
+`http://NEWipaddress:port/getethernetconfig`
+
 
 ## Configurable Items
 
@@ -163,9 +195,8 @@ After changes to configuration, files server needs to be restarted.
         "displayIp": "192.168.100.100",
             "displayPort": "9551",
             "controllerType": "T430",
-
-            "confirmIp": "127.0.0.1",
-            "confirmPort": "9098",
+			"infoScreenTtl": "15"
+            
             
             "displayHeight": "160",
             "displayWidth": "96",
@@ -173,16 +204,22 @@ After changes to configuration, files server needs to be restarted.
             "layout": {
                 "vehicle": {
                     "numberplate": {
-                        "coordinates": "0 0 100 29",
+                        "coordinates": "0 0 95 29",
                         "type": "text",
-                "align": "center",
+						"textFromStart":"true",
+						"textLiveUpdate":"false",
+						"headToTail":"5",
+						"scrollSpeed": "4",
+						"font": "font1.ttf",
+						"align": "center",
                         "fontSize": "24",
                         "fontColor": "255 255 255"
                     },
                     "infotext": {
-                        "coordinates": "0 30 100 69",
+                        "coordinates": "0 30 95 69",
                         "type": "static",
                         "align": "center",
+						"font": "font2.ttf",
                         "fontSize": "24",
                         "fontColor": "255 255 255",
                         "params": {
@@ -190,17 +227,34 @@ After changes to configuration, files server needs to be restarted.
                         }
                     },
                     "arrow": {
-                        "coordinates": "0 70 100 100",
+                        "coordinates": "0 70 95 100",
                         "type": "image",
+						"ttl": "300"
+						"defaultValue": "This is default text"
                         "params": {
                             "S": "fwd.png",
                             "RE": "left.png"
+                        }
+                    },
+                    "commercial": {
+                        "coordinates": "0 101 95 120",
+                        "type": "video",
+                        "params": {
+                            "VID1": "video1.mp4",
+                            "VID2": "video2.mp4"
+                        }
+                    },
+                    "clock": {
+                        "coordinates": "0 121 95 140",
+                        "type": "date",
+                        "dateFormat": "yyyy-MM-dd",
+						"dateOffset": "+3"
                         }
                     }
                 },
                 "message": {
                     "all": {
-                        "coordinates": "0 0 100 100",
+                        "coordinates": "0 0 95 100",
                         "type": "image",
                         "params": {
                             "WAIT": "pleasewait.png",
@@ -220,7 +274,6 @@ After changes to configuration, files server needs to be restarted.
 - Display IP and port
 - Display meta name
 - Display controller type
-- Feedback server IP and port
 - Display height
 - Display width
 - Display layout
@@ -230,6 +283,8 @@ After changes to configuration, files server needs to be restarted.
 - Text-based content font size
 - Text-based content font colour
 - Picture based content parameters
+- Video based content parameters
+- Date based content parameters
 
 ## Listening Port
 
@@ -295,18 +350,15 @@ Define the following value in `config.json` file:
 
 `controllerType`          -> controller model
 
-## Feedback Server IP and port
+## Show IP on boot
 
 ```json
-
-"confirmIp": "127.0.0.1",
-"confirmPort": "9092",
+"infoScreenTtl": "15"
 ```
 
 Define the following value in `config.json` file:
 
-`confirmIp`          -> In the form of standard IPv4 address
-`confirmPort`        -> Numerical value within the range 1025->65535
+`infoScreenTtl`          -> define value in seconds
 
 ## Display Size
 
@@ -369,7 +421,7 @@ Must physically fit into display area and no overlap with other areas.
 
 Define the following values in `config.json` file:
 
-`type`           -> Possible values - `static`, `text` or `image`
+`type`           -> Possible values - `static`, `text`, `video`, `date` or `image`
 
 ### Static Text Variables
 
@@ -377,6 +429,8 @@ Define the following values in `config.json` file:
 "align": "center",
            "fontSize": "24",
            "fontColor": "255 255 255",
+		   "ttl": "300",
+		   "defaultValue": "This is default text",
            "params": {
                         "TEXTID": "text"
                      }
@@ -385,16 +439,62 @@ Define the following values in `config.json` file:
 If the chosen area type was chosen `static` then define section `texts` and add following variables:
 
 `align` -> text alginment. Possible values `center` or `left`
-
 `fontSize` -> font size in pixels, must be smaller than area height
-
 `fontColor` -> font color in RGB
-
-`params` -> parameters subgroup. Fixed value.
-
+`ttl` -> time in seconds after which content is erased or replaced by "defaultValue" 
+`defaultValue` -> after expiration of ttl, the area content can be define as default text or image (picture1.png)
+`params` -> parameters subgroup. Fixed value
 `TEXTID` -> String type value, up to 255 characters
-
 `text` -> Text to be displayed, up to 255 characters
+
+For "text" and "static" areas it is possible to define font color also with the GET request: 
+
+http://ampronledIP:port/mlds?id=DISPLAY_ID&layout=LAYOUT_NAME&AREA_NAME=HELLO&fontColor[AREA_NAME]=0_255_255 , where 0_255_255 is the color of text in RGB
+
+It is possible to define background color of "text" and "static" areas text. To set the background color of text, define following parameter under the relevant area:
+
+"backgroundColor": "0 255 255",    whereas "0 255 255" is the color of text background in RGB
+
+it is also possible to define alpha channel for this feature, 
+
+"backgroundColor": "0 255 255 127",  whereas 127 is alpha channel value 0...127
+
+### Freetext Parameters
+
+```json
+"align": "center",
+"fontSize": "24",
+"fontColor": "255 255 255"
+"textFromStart":"true",
+"textLiveUpdate":"false",
+"headToTail":"5",
+"scrollSpeed": "4",
+"font": "font1.ttf",
+
+```
+
+If the chosen area type was chosen `text` then define following variables:
+
+`align`     -> text alginment. Possible values `center`, `right` or `left`. Valid only when text fits into area.
+`fontSize`  -> font size in pixels, must be smaller than area height
+`fontColor` -> font color in RGB
+`textFromStart` -> start scrolling text from beginning on update
+`textLiveUpdate` -> update text on the fly
+`headToTail` -> add spaces between scrolling text end and start
+`scrollSpeed` -> manage scrolling speed, values 0 to 8, default 4
+`font` -> assign specific font to the area, relevant .ttf file must be located in `fonts/filename`, relative to `ampronled`
+
+For "text" and "static" areas it is possible to define font color also with the GET request: 
+
+http://ampronledIP:port/mlds?id=DISPLAY_ID&layout=LAYOUT_NAME&AREA_NAME=HELLO&fontColor[AREA_NAME]=0_255_255 , where 0_255_255 is the color of text in RGB
+
+It is possible to define background color of "text" and "static" areas text. To set the background color of text, define following parameter under the relevant area:
+
+"backgroundColor": "0 255 255",    whereas "0 255 255" is the color of text background in RGB
+
+it is also possible to define alpha channel for this feature, 
+
+"backgroundColor": "0 255 255 127",  whereas 127 is alpha channel value 0...127
 
 ### Picture Parameters
 
@@ -411,27 +511,75 @@ Add following values:
 
 All files must be located in the catalogue `images/filename`, relative to `ampronled`
 
-### Freetext Parameters
+### Video Parameters
 
 ```json
-"align": "center",
+"params": {
+            "VIDEOID": "filename1.mp4",
+          }
+```
+
+If the chosen area type was chosen `video` then define following variables:
+
+`VIDEOID`    -> String type unique value, up to 255 characters
+`filename1.mp4`    -> String type value, up to 255 characters filename with the filename extension.
+
+All files must be located in the catalogue `images/filename`, relative to `ampronled`
+
+### Date and Time Parameters
+
+```json
+
 "fontSize": "24",
-"fontColor": "255 255 255"
+"fontColor": "255 255 255",
+"font": "font1.ttf",
+"dateOffset": "+3"
+"dateFormat": "yyyy-MM-dd",
+
 
 ```
 
-If the chosen area type was chosen `text` then define following variables:
+If the chosen area type was chosen `date` then define following variables:
 
-`align`     -> text alginment. Possible values `center` or `left`. Valid only when text fits into area.
 `fontSize`  -> font size in pixels, must be smaller than area height
 `fontColor` -> font color in RGB
+`font` -> assign specific font to the area, relevant .ttf file must be located in `fonts/filename`, relative to `ampronled`
+`dateOffset` -> offset in hours from GMT+0
+
+`dateFormat` -> see time formatting options:
+
+				Symbol   Meaning                Presentation       Example
+				------   -------                ------------       -------
+				G        era designator         (Text)             AD
+				y        year                   (Number)           1996
+				M        month in year          (Text & Number)    July & 07
+				L        standalone month       (Text & Number)    July & 07
+				d        day in month           (Number)           10
+				c        standalone day         (Number)           10
+				h        hour in am/pm (1~12)   (Number)           12
+				H        hour in day (0~23)     (Number)           0
+				m        minute in hour         (Number)           30
+				s        second in minute       (Number)           55
+				S        fractional second      (Number)           978
+				E        day of week            (Text)             Tuesday
+				D        day in year            (Number)           189
+				a        am/pm marker           (Text)             PM
+				k        hour in day (1~24)     (Number)           24
+				K        hour in am/pm (0~11)   (Number)           0
+				z        time zone              (Text)             Pacific Standard Time
+				Z        time zone (RFC 822)    (Number)           -0800
+				v        time zone (generic)    (Text)             Pacific Time
+				Q        quarter                (Text)             Q3
+				'        escape for text        (Delimiter)        'Date='
+				''       single quote           (Literal)          'o''clock' 
 
 
 ## Monitoring and BITE
 
-Our information system has built-in monitoring that monitors communications to all displays that are added to the configuration file. It also monitors the successful forwarding of the information packages and has the feedback loop to a feedback IP address.
-Information system monitors the last sent package success. If the feedback was the same then information is not sent again. After server restart, all active displays receive the command to empty the content of the screen.
+Status information of SLDS can be checked http://ipaddress:port/info and http://ipaddress:port/status
+
+It is possible to check screenshot of current view on the screen(this will currently not show video area content): http://ipaddress:port/screenshot
 
 ## Logging
 
-AmpronLED software logs all actions with timestamps. Logs are kept by default one month. Length may be set different according to specific needs.
+Logging should be implemented by TPCM via checking `http://ipaddress:port/info` page
