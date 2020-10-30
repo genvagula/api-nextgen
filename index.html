@@ -222,7 +222,7 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="introduction">Introduction</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#ampronled-software" class="toc-h2 toc-link" data-title="ampronled-software">AmpronLED software</a>
+                    <a href="#ampronled-nextgen-software" class="toc-h2 toc-link" data-title="ampronled-nextgen-software">AmpronLED NextGen software</a>
                   </li>
               </ul>
           </li>
@@ -248,9 +248,6 @@
                     <a href="#addressing" class="toc-h2 toc-link" data-title="addressing">Addressing</a>
                   </li>
                   <li>
-                    <a href="#numbering" class="toc-h2 toc-link" data-title="numbering">Numbering</a>
-                  </li>
-                  <li>
                     <a href="#encoding-of-url-query-parameters" class="toc-h2 toc-link" data-title="encoding-of-url-query-parameters">Encoding of URL Query Parameters</a>
                   </li>
               </ul>
@@ -258,6 +255,21 @@
           <li>
             <a href="#configuration" class="toc-h1 toc-link" data-title="configuration">Configuration</a>
               <ul class="toc-list-h2">
+                  <li>
+                    <a href="#main" class="toc-h2 toc-link" data-title="main">Main</a>
+                  </li>
+                  <li>
+                    <a href="#uploading-configuration" class="toc-h2 toc-link" data-title="uploading-configuration">Uploading configuration</a>
+                  </li>
+                  <li>
+                    <a href="#activation-of-new-configuration" class="toc-h2 toc-link" data-title="activation-of-new-configuration">Activation of new configuration</a>
+                  </li>
+                  <li>
+                    <a href="#managing-brightness-manually" class="toc-h2 toc-link" data-title="managing-brightness-manually">Managing brightness manually</a>
+                  </li>
+                  <li>
+                    <a href="#changing-network-configuration" class="toc-h2 toc-link" data-title="changing-network-configuration">Changing Network configuration</a>
+                  </li>
                   <li>
                     <a href="#configurable-items" class="toc-h2 toc-link" data-title="configurable-items">Configurable Items</a>
                   </li>
@@ -280,7 +292,7 @@
                     <a href="#display-controller-type" class="toc-h2 toc-link" data-title="display-controller-type">Display Controller Type</a>
                   </li>
                   <li>
-                    <a href="#feedback-server-ip-and-port" class="toc-h2 toc-link" data-title="feedback-server-ip-and-port">Feedback Server IP and port</a>
+                    <a href="#show-ip-on-boot" class="toc-h2 toc-link" data-title="show-ip-on-boot">Show IP on boot</a>
                   </li>
                   <li>
                     <a href="#display-size" class="toc-h2 toc-link" data-title="display-size">Display Size</a>
@@ -315,9 +327,6 @@
                     <a href="#configuration" class="toc-h2 toc-link" data-title="configuration">Configuration</a>
                   </li>
                   <li>
-                    <a href="#define-different-play-styles" class="toc-h2 toc-link" data-title="define-different-play-styles">Define different play-styles</a>
-                  </li>
-                  <li>
                     <a href="#define-text-colour" class="toc-h2 toc-link" data-title="define-text-colour">Define text colour</a>
                   </li>
                   <li>
@@ -325,9 +334,6 @@
                   </li>
                   <li>
                     <a href="#set-text-background-colour" class="toc-h2 toc-link" data-title="set-text-background-colour">Set text background colour</a>
-                  </li>
-                  <li>
-                    <a href="#windows-command-line-options" class="toc-h2 toc-link" data-title="windows-command-line-options">Windows command line options</a>
                   </li>
               </ul>
           </li>
@@ -342,52 +348,51 @@
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
 <p>The purpose is to describe the configuration of Ampron LED display communication protocol. </p>
-<h2 id='ampronled-software'>AmpronLED software</h2>
-<p>AmpronLED software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.</p>
+<h2 id='ampronled-nextgen-software'>AmpronLED NextGen software</h2>
+<p>AmpronLED NextGen software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.</p>
 
 <p>Current API defines the ways of configuring and communicating with the software. The general approach, method, syntax and semantics are described in the following chapters.</p>
 
 <p>The communication protocol is defined to a level of technical detail which should assure a clear understanding of how to drive, monitor and manage the software and displays.</p>
 
-<p>Following is a structured in a way that at the left side you will see descriptions and at the right side are the example values.</p>
+<p>Following is structured in a way that at the left side you will see descriptions and at the right side are the example values.</p>
 <h1 id='communication-protocol'>Communication Protocol</h1>
-<p>This chapter is intended to describe the communication concept and protocol between Third Party Communication Module (TPCM) and AmpronLED software for the operational environment. The communication protocol is closely related to the configuration of AmpronLED software.</p>
+<p>This chapter is intended to describe the communication concept and protocol between Third Party Communication Module (TPCM) and AmpronLED NextGen software for the operational environment. The communication protocol is closely related to the configuration of AmpronLED NextGen software.</p>
 
 <p>Main Communication Process:</p>
 
 <p><strong>PHASE1</strong>
--    Third-Party Communication Module (TPCM) sends a control message to AmpronLED</p>
+-    Third-Party Communication Module (TPCM) sends a control message to AmpronLED NextGen</p>
 
 <p><strong>PHASE2</strong>
--    AmpronLED sends data to the Smart LED Display System (SLDS)</p>
+-    AmpronLED NextGen visualises data on the Smart LED Display System (SLDS)</p>
 
 <p><strong>PHASE3</strong>
--    SLDS reports back to AmpronLED with the status message</p>
+-    AmpronLED NextGen makes feedback messages available for parsing</p>
 <h2 id='general-view'>General View</h2>
 <p>The complete system is composed of the following components:</p>
 
 <ul>
 <li>Third Party Communication Module</li>
-<li>AmpronLED Software</li>
-<li>SLDS Display Units</li>
+<li>AmpronLED NextGen Software running inside of SLDS Display Units</li>
 <li>Communication Network</li>
 </ul>
 
-<p><strong>Third-party communication module</strong> is responsible for sending control messages and receiving status messages.</p>
+<p><strong>Third-party communication module</strong> is responsible for sending control messages and polling status messages.</p>
 
-<p><strong>AmpronLED Software</strong> is responsible for receiving the control messages from TPCM, sending out status messages to TPCM and communicating with SLDS Unit(s).</p>
+<p><strong>AmpronLED NextGen Software</strong> is responsible for receiving the control messages from TPCM, creating status messages for TPCM and visualising content on SLDS Unit(s).</p>
 
 <p><em>Note: as for generalization purposes, only Ampron standard software with its communication format, syntax and semantics are described.</em></p>
 
-<p><strong>SLDS Display Units</strong> are the visualization units (LED displays) which provide the visual results of communication between Third Party communication module and AmpronLED software.</p>
+<p><strong>SLDS Display Units</strong> are the visualization units (LED, LCD/TFT or VMS displays) which provide the visual results of communication between Third Party communication module and AmpronLED NextGen software.</p>
 
-<p><strong>Communication Network</strong> is considered to include all equipment and measures between TPCM, AmpronLED and SLDS Display Units.</p>
+<p><strong>Communication Network</strong> is considered to include all equipment and measures between TPCM and SLDS Display Units.</p>
 
-<p><img src="images/Ampron_LED_Communication_Overview.png" alt="Ampron LED Communication Overview" /></p>
+<p><img src="images/images/Ampron_LED_Communication_Overview_NextGen.png" alt="Ampron LED Communication Overview" /> </p>
 <h2 id='method-syntax-and-semantics'>Method, Syntax and Semantics</h2><h3 id='method'>Method</h3>
-<p>Messaging between TPCM and AmpronLED is performed by using <strong>HTTP GET</strong> method in both directions.</p>
+<p>Messaging between TPCM and AmpronLED NEXTGEN is performed by using <strong>HTTP GET</strong> method.</p>
 <h3 id='syntax'>Syntax</h3>
-<p>Control message format between TPCM and AmpronLED is HTTP Request:</p>
+<p>Control message format between TPCM and AmpronLED NextGen is HTTP Request:</p>
 
 <p><code>GET http://ipaddress:port/mlds?nameX=valueX&amp;nameY=valueY&amp;nameZ=valueZ</code></p>
 
@@ -403,11 +408,11 @@
 </tr>
 <tr>
 <td><code>ipaddress</code></td>
-<td>IP address of the server where AmpronLED Software or TPCM is installed</td>
+<td>IP address of the SLDS running AmpronLED NextGen software</td>
 </tr>
 <tr>
 <td><code>:port</code></td>
-<td>communication port which is listened by TPCM or AmpronLED, integer 1025…65535</td>
+<td>communication port which is listened by AmpronLED NextGen, integer 1025…65535</td>
 </tr>
 <tr>
 <td><code>/mlds?</code></td>
@@ -443,40 +448,64 @@
 
 <p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;nameZ=valueZ&amp;inumber=XXXXX</code></p>
 <h2 id='areadata'>AreaData</h2>
-<p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then the request will be disregarded as faulty.
-If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 3 types of AreaData (static text, live text and images):</p>
+<p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then they will be disregarded as faulty.
+If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 6 types of AreaData (static text, live text, images, date&amp;time, video and images):</p>
 
 <p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
-<h2 id='status-responses'>Status Responses</h2><h3 id='success'>Success</h3>
-<p>AmpronLED software confirms the successful control message execution by responding with HTTP GET.</p>
+<h2 id='status-responses'>Status Responses</h2><h3 id='command-status'>Command Status</h3>
+<p>AmpronLED NextGen software confirms synchronously with OK if the HTTP GET request is received and does not contain forbidden elements.
+AmpronLED NextGen software confirms the last control message status by visualising it at:</p>
 
-<p><code>GET http://ipaddress:port/mlds?confirm=1&amp;inumber=XXXXX</code></p>
-<h3 id='failed'>Failed</h3>
-<p>AmpronLED software responds with unsuccessful control message execution by responding with HTTP GET.</p>
+<p><code>http://ipaddress:port/info</code></p>
+<h3 id='configuration-status'>Configuration Status</h3>
+<p>AmpronLED NextGen software confirms the last configuration check result by visualising it at:</p>
 
-<p><code>GET http://ipaddress:port/mlds?confirm=0&amp;inumber=XXXXX</code></p>
-<h3 id='fault'>Fault</h3>
-<p>AmpronLED software responds to the faulty command by responding with HTTP GET.</p>
+<p><code>http://ipaddress:port/info</code></p>
+<h3 id='network-configuration'>Network configuration</h3>
+<p>AmpronLED NextGen software current network configuration is visible at:</p>
 
-<p><code>GET http://ipaddress:port/mlds?confirm=2&amp;inumber=XXXXX</code></p>
+<p><code>http://ipaddress:port/getethernetconfig</code></p>
 <h2 id='addressing'>Addressing</h2>
-<p>There can be 99 MLDS units operated by one AmpronLED instance, usually, multiple instances are used:</p>
+<p>There can be 1 SLDS unit operated by one AmpronLED NextGen instance, however multiple id-s can be present in config.json:</p>
 
 <p>MLDS unit identifier -&gt; variable nameX is “id”, value is string max 255 chars</p>
-
-<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
-<h2 id='numbering'>Numbering</h2>
-<p>The numbering is done by TPCM (Third Party Communication Module), AmpronLED answers with the string provided by TPCM:</p>
-
-<p>Instructions sequence number -&gt; variable <code>nameX</code> is <code>inumber</code>, value is string of reasonable length</p>
 
 <p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
 <h2 id='encoding-of-url-query-parameters'>Encoding of URL Query Parameters</h2>
 <p>Characters from the unreserved set are represented as-is without translation, other characters are converted to bytes according to UTF-8, and then percent-encoded.
 See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wikipedia Percent Encoding</a></p>
-<h1 id='configuration'>Configuration</h1>
-<p>The main configuration is set in a <code>config.json</code> file. Other configuration items are defined in various files and are linked to the main file according to specific needs.
-After changes to configuration, files server needs to be restarted.</p>
+<h1 id='configuration'>Configuration</h1><h2 id='main'>Main</h2>
+<p>The main configuration is set in a <code>config.json</code> file. Other configuration items are defined in various files and are linked to the main file according to specific needs using referencing.</p>
+<h2 id='uploading-configuration'>Uploading configuration</h2>
+<p>After changes to configuration, configuration files must: (a) be uploaded to SLDS via SFTP or (b)zipped and made available to be reached at desired URL. To download configuration files to SLDS, relevant HTTP GET command must be given:</p>
+
+<p>`http://ipaddress:port/load_config?url=http://URL/conf.zip</p>
+<h2 id='activation-of-new-configuration'>Activation of new configuration</h2>
+<p>Configuration is checked every 3000 seconds and activated automatically, to force check use HTTP GET command:</p>
+
+<p><code>http://ipaddress:port/reload_config</code></p>
+
+<p>After configuration change, check the status at:</p>
+
+<p><code>http://ipaddress:port/info</code></p>
+
+<p>If errors are detected in configuration files, they are disregarded and relevant information is shown on the above link.</p>
+<h2 id='managing-brightness-manually'>Managing brightness manually</h2>
+<p>LED Screen brightness can be managed manually by sending HTTP GET request with desired value 0...100:</p>
+
+<p><code>http://ampronledIP:port/brightness/VALUE</code></p>
+
+<p>NOTE! To disable internal brightness scheduler to avoid it from overriding the manual value define in config.json:</p>
+
+<p>&quot;sensorBrightness&quot;: true,</p>
+<h2 id='changing-network-configuration'>Changing Network configuration</h2>
+<p>To change network configuration and enable/disable DHCP use commands (NB! remember, this should be used only if one id is defined in config.json):</p>
+
+<p><code>http://OLDipaddress:port/setethernetconfig?dhcp=true&amp;ip=NEWipaddress&amp;netmask=NEWnetmaskip&amp;gateway=NEWgatewayip&amp;dns=NEWdnsip</code> </p>
+
+<p>to check status:</p>
+
+<p><code>http://NEWipaddress:port/getethernetconfig</code></p>
 <h2 id='configurable-items'>Configurable Items</h2><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9199"</span><span class="p">,</span><span class="w">
 
@@ -487,9 +516,8 @@ After changes to configuration, files server needs to be restarted.</p>
         </span><span class="s2">"displayIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.100"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"displayPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9551"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"controllerType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"T430"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"infoScreenTtl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15"</span><span class="w">
 
-            </span><span class="s2">"confirmIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"confirmPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9098"</span><span class="p">,</span><span class="w">
 
             </span><span class="s2">"displayHeight"</span><span class="p">:</span><span class="w"> </span><span class="s2">"160"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"displayWidth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"96"</span><span class="p">,</span><span class="w">
@@ -497,16 +525,22 @@ After changes to configuration, files server needs to be restarted.</p>
             </span><span class="s2">"layout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"vehicle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                     </span><span class="s2">"numberplate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 100 29"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 95 29"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"textFromStart"</span><span class="p">:</span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"textLiveUpdate"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"headToTail"</span><span class="p">:</span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"scrollSpeed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"font"</span><span class="p">:</span><span class="w"> </span><span class="s2">"font1.ttf"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="w">
                     </span><span class="p">},</span><span class="w">
                     </span><span class="s2">"infotext"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 30 100 69"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 30 95 69"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"static"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"font"</span><span class="p">:</span><span class="w"> </span><span class="s2">"font2.ttf"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -514,17 +548,34 @@ After changes to configuration, files server needs to be restarted.</p>
                         </span><span class="p">}</span><span class="w">
                     </span><span class="p">},</span><span class="w">
                     </span><span class="s2">"arrow"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 70 100 100"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 70 95 100"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300"</span><span class="w">
+                        </span><span class="s2">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is default text"</span><span class="w">
                         </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                             </span><span class="s2">"S"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fwd.png"</span><span class="p">,</span><span class="w">
                             </span><span class="s2">"RE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"left.png"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"commercial"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 101 95 120"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"video"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"VID1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"video1.mp4"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"VID2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"video2.mp4"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"clock"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 121 95 140"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"date"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"dateFormat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yyyy-MM-dd"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"dateOffset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"+3"</span><span class="w">
                         </span><span class="p">}</span><span class="w">
                     </span><span class="p">}</span><span class="w">
                 </span><span class="p">},</span><span class="w">
                 </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                     </span><span class="s2">"all"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 100 100"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 95 100"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                             </span><span class="s2">"WAIT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pleasewait.png"</span><span class="p">,</span><span class="w">
@@ -545,7 +596,6 @@ After changes to configuration, files server needs to be restarted.</p>
 <li>Display IP and port</li>
 <li>Display meta name</li>
 <li>Display controller type</li>
-<li>Feedback server IP and port</li>
 <li>Display height</li>
 <li>Display width</li>
 <li>Display layout</li>
@@ -555,6 +605,8 @@ After changes to configuration, files server needs to be restarted.</p>
 <li>Text-based content font size</li>
 <li>Text-based content font colour</li>
 <li>Picture based content parameters</li>
+<li>Video based content parameters</li>
+<li>Date based content parameters</li>
 </ul>
 <h2 id='listening-port'>Listening Port</h2><pre class="highlight json tab-json"><code><span class="w">
 </span><span class="s2">"port"</span><span class="p">:</span><span class="w">  </span><span class="s2">"9090"</span><span class="p">,</span><span class="w">
@@ -592,14 +644,11 @@ After changes to configuration, files server needs to be restarted.</p>
 <p>Define the following value in <code>config.json</code> file:</p>
 
 <p><code>controllerType</code>          -&gt; controller model</p>
-<h2 id='feedback-server-ip-and-port'>Feedback Server IP and port</h2><pre class="highlight json tab-json"><code><span class="w">
-</span><span class="s2">"confirmIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
-</span><span class="s2">"confirmPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9092"</span><span class="p">,</span><span class="w">
+<h2 id='show-ip-on-boot'>Show IP on boot</h2><pre class="highlight json tab-json"><code><span class="s2">"infoScreenTtl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15"</span><span class="w">
 </span></code></pre>
 <p>Define the following value in <code>config.json</code> file:</p>
 
-<p><code>confirmIp</code>          -&gt; In the form of standard IPv4 address
-<code>confirmPort</code>        -&gt; Numerical value within the range 1025-&gt;65535</p>
+<p><code>infoScreenTtl</code>          -&gt; define value in seconds</p>
 <h2 id='display-size'>Display Size</h2><pre class="highlight json tab-json"><code><span class="s2">"displayHeight"</span><span class="p">:</span><span class="w">    </span><span class="s2">"160"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"displayWidth"</span><span class="p">:</span><span class="w">     </span><span class="s2">"96"</span><span class="p">,</span><span class="w">
 </span></code></pre>
@@ -641,27 +690,70 @@ Must physically fit into display area and no overlap with other areas.
 </span></code></pre>
 <p>Define the following values in <code>config.json</code> file:</p>
 
-<p><code>type</code>           -&gt; Possible values - <code>static</code>, <code>text</code> or <code>image</code></p>
+<p><code>type</code>           -&gt; Possible values - <code>static</code>, <code>text</code>, <code>video</code>, <code>date</code> or <code>image</code></p>
 <h3 id='static-text-variables'>Static Text Variables</h3><pre class="highlight json tab-json"><code><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
            </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
            </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="p">,</span><span class="w">
+           </span><span class="s2">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"300"</span><span class="p">,</span><span class="w">
+           </span><span class="s2">"defaultValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is default text"</span><span class="p">,</span><span class="w">
            </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                         </span><span class="s2">"TEXTID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="w">
                      </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>If the chosen area type was chosen <code>static</code> then define section <code>texts</code> and add following variables:</p>
 
-<p><code>align</code> -&gt; text alginment. Possible values <code>center</code> or <code>left</code></p>
+<p><code>align</code> -&gt; text alginment. Possible values <code>center</code> or <code>left</code>
+<code>fontSize</code> -&gt; font size in pixels, must be smaller than area height
+<code>fontColor</code> -&gt; font color in RGB
+<code>ttl</code> -&gt; time in seconds after which content is erased or replaced by &quot;defaultValue&quot; 
+<code>defaultValue</code> -&gt; after expiration of ttl, the area content can be define as default text or image (picture1.png)
+<code>params</code> -&gt; parameters subgroup. Fixed value
+<code>TEXTID</code> -&gt; String type value, up to 255 characters
+<code>text</code> -&gt; Text to be displayed, up to 255 characters</p>
 
-<p><code>fontSize</code> -&gt; font size in pixels, must be smaller than area height</p>
+<p>For &quot;text&quot; and &quot;static&quot; areas it is possible to define font color also with the GET request: </p>
 
-<p><code>fontColor</code> -&gt; font color in RGB</p>
+<p>http://ampronledIP:port/mlds?id=DISPLAY_ID&amp;layout=LAYOUT_NAME&amp;AREA_NAME=HELLO&amp;fontColor[AREA_NAME]=0_255_255 , where 0_255_255 is the color of text in RGB</p>
 
-<p><code>params</code> -&gt; parameters subgroup. Fixed value.</p>
+<p>It is possible to define background color of &quot;text&quot; and &quot;static&quot; areas text. To set the background color of text, define following parameter under the relevant area:</p>
 
-<p><code>TEXTID</code> -&gt; String type value, up to 255 characters</p>
+<p>&quot;backgroundColor&quot;: &quot;0 255 255&quot;,    whereas &quot;0 255 255&quot; is the color of text background in RGB</p>
 
-<p><code>text</code> -&gt; Text to be displayed, up to 255 characters</p>
+<p>it is also possible to define alpha channel for this feature, </p>
+
+<p>&quot;backgroundColor&quot;: &quot;0 255 255 127&quot;,  whereas 127 is alpha channel value 0...127</p>
+<h3 id='freetext-parameters'>Freetext Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="w">
+</span><span class="s2">"textFromStart"</span><span class="p">:</span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"textLiveUpdate"</span><span class="p">:</span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"headToTail"</span><span class="p">:</span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"scrollSpeed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"font"</span><span class="p">:</span><span class="w"> </span><span class="s2">"font1.ttf"</span><span class="p">,</span><span class="w">
+
+</span></code></pre>
+<p>If the chosen area type was chosen <code>text</code> then define following variables:</p>
+
+<p><code>align</code>     -&gt; text alginment. Possible values <code>center</code>, <code>right</code> or <code>left</code>. Valid only when text fits into area.
+<code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height
+<code>fontColor</code> -&gt; font color in RGB
+<code>textFromStart</code> -&gt; start scrolling text from beginning on update
+<code>textLiveUpdate</code> -&gt; update text on the fly
+<code>headToTail</code> -&gt; add spaces between scrolling text end and start
+<code>scrollSpeed</code> -&gt; manage scrolling speed, values 0 to 8, default 4
+<code>font</code> -&gt; assign specific font to the area, relevant .ttf file must be located in <code>fonts/filename</code>, relative to <code>ampronled</code></p>
+
+<p>For &quot;text&quot; and &quot;static&quot; areas it is possible to define font color also with the GET request: </p>
+
+<p>http://ampronledIP:port/mlds?id=DISPLAY_ID&amp;layout=LAYOUT_NAME&amp;AREA_NAME=HELLO&amp;fontColor[AREA_NAME]=0_255_255 , where 0_255_255 is the color of text in RGB</p>
+
+<p>It is possible to define background color of &quot;text&quot; and &quot;static&quot; areas text. To set the background color of text, define following parameter under the relevant area:</p>
+
+<p>&quot;backgroundColor&quot;: &quot;0 255 255&quot;,    whereas &quot;0 255 255&quot; is the color of text background in RGB</p>
+
+<p>it is also possible to define alpha channel for this feature, </p>
+
+<p>&quot;backgroundColor&quot;: &quot;0 255 255 127&quot;,  whereas 127 is alpha channel value 0...127</p>
 <h3 id='picture-parameters'>Picture Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"PICTUREID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filename1.gif"</span><span class="p">,</span><span class="w">
           </span><span class="p">}</span><span class="w">
@@ -672,67 +764,68 @@ Must physically fit into display area and no overlap with other areas.
 <code>filename.gif</code>    -&gt; String type value, up to 255 characters filename with the filename extension.</p>
 
 <p>All files must be located in the catalogue <code>images/filename</code>, relative to <code>ampronled</code></p>
-<h3 id='freetext-parameters'>Freetext Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
+<h3 id='video-parameters'>Video Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"VIDEOID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filename1.mp4"</span><span class="p">,</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>If the chosen area type was chosen <code>video</code> then define following variables:</p>
+
+<p><code>VIDEOID</code>    -&gt; String type unique value, up to 255 characters
+<code>filename1.mp4</code>    -&gt; String type value, up to 255 characters filename with the filename extension.</p>
+
+<p>All files must be located in the catalogue <code>images/filename</code>, relative to <code>ampronled</code></p>
+<h3 id='date-and-time-parameters'>Date and Time Parameters</h3><pre class="highlight json tab-json"><code><span class="w">
 </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
-</span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="w">
+</span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"font"</span><span class="p">:</span><span class="w"> </span><span class="s2">"font1.ttf"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"dateOffset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"+3"</span><span class="w">
+</span><span class="s2">"dateFormat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yyyy-MM-dd"</span><span class="p">,</span><span class="w">
+
 
 </span></code></pre>
-<p>If the chosen area type was chosen <code>text</code> then define following variables:</p>
+<p>If the chosen area type was chosen <code>date</code> then define following variables:</p>
 
-<p><code>align</code>     -&gt; text alginment. Possible values <code>center</code> or <code>left</code>. Valid only when text fits into area.
-<code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height
-<code>fontColor</code> -&gt; font color in RGB</p>
+<p><code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height
+<code>fontColor</code> -&gt; font color in RGB
+<code>font</code> -&gt; assign specific font to the area, relevant .ttf file must be located in <code>fonts/filename</code>, relative to <code>ampronled</code>
+<code>dateOffset</code> -&gt; offset in hours from GMT+0</p>
+
+<p><code>dateFormat</code> -&gt; see time formatting options:</p>
+
+<p>Symbol   Meaning                Presentation       Example
+                ------   -------                ------------       -------
+                G        era designator         (Text)             AD
+                y        year                   (Number)           1996
+                M        month in year          (Text &amp; Number)    July &amp; 07
+                L        standalone month       (Text &amp; Number)    July &amp; 07
+                d        day in month           (Number)           10
+                c        standalone day         (Number)           10
+                h        hour in am/pm (1~12)   (Number)           12
+                H        hour in day (0~23)     (Number)           0
+                m        minute in hour         (Number)           30
+                s        second in minute       (Number)           55
+                S        fractional second      (Number)           978
+                E        day of week            (Text)             Tuesday
+                D        day in year            (Number)           189
+                a        am/pm marker           (Text)             PM
+                k        hour in day (1~24)     (Number)           24
+                K        hour in am/pm (0~11)   (Number)           0
+                z        time zone              (Text)             Pacific Standard Time
+                Z        time zone (RFC 822)    (Number)           -0800
+                v        time zone (generic)    (Text)             Pacific Time
+                Q        quarter                (Text)             Q3
+                &#39;        escape for text        (Delimiter)        &#39;Date=&#39;
+                &#39;&#39;       single quote           (Literal)          &#39;o&#39;&#39;clock&#39; </p>
 <h2 id='monitoring-and-bite'>Monitoring and BITE</h2>
-<p>Our information system has built-in monitoring that monitors communications to all displays that are added to the configuration file. It also monitors the successful forwarding of the information packages and has the feedback loop to a feedback IP address.
-Information system monitors the last sent package success. If the feedback was the same then information is not sent again. After server restart, all active displays receive the command to empty the content of the screen.</p>
-<h2 id='logging'>Logging</h2>
-<p>AmpronLED software logs all actions with timestamps. Logs are kept by default one month. Length may be set different according to specific needs.</p>
-<h1 id='errors'>Errors</h1>
-<p>Ampron API uses the following error codes:</p>
+<p>Status information of SLDS can be checked http://ipaddress:port/info and http://ipaddress:port/status</p>
 
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden -- The resource requested is hidden for administrators only.</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found -- The specified resource could not be found.</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed -- You tried to access a resource with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many resource! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable -- Server temporarily offline. Please contact support.</td>
-</tr>
-</tbody></table>
+<p>It is possible to check screenshot of current view on the screen(this will currently not show video area content): http://ipaddress:port/screenshot</p>
+<h2 id='logging'>Logging</h2>
+<p>Logging should be implemented by TPCM via checking <code>http://ipaddress:port/info</code> page</p>
+<h1 id='errors'>Errors</h1>
+<p>AmpronLED NextGen visualises errors and current status at http://ampronledIP:port/info</p>
+
+<p>To check what is currently on screen requwst for screenshot: http://ipaddress:port/screenshot</p>
 <h1 id='how-to-features'>How To (Features)</h1><h2 id='brightness-control'>Brightness control</h2><h3 id='it-is-possible-to-change-the-brightness-of-the-display-in-6-different-ways'>It is possible to change the brightness of the display in 6 different ways:</h3><h3 id='1-automatic-daylight'>1. Automatic daylight</h3>
 <p>This is the default mode, brightness is changed between 50% and 100% automatically. Time of change is defined by sunset and sunrise with an accuracy of 2 weeks, example:
 in the first half of May, the daytime starts later than in the second half of May and in the first half of June later than in the second half of May etc. Default sunset times are taken for local longitude and latitude.</p>
@@ -749,112 +842,12 @@ To use this feature, it is needed to add a specific brightness-schedule.json fil
 <p><code>http://ampronledIP:port/brightness/VALUE?id=DISPLAY_ID</code></p>
 
 <p>VALUE can be from 1 to 100</p>
-<h3 id='4-manual-brightness-for-all-screens'>4. Manual brightness for all screens</h3>
-<p>To enable manual brightness setting feature, define the following parameter at <code>&quot;controllerIP&quot;</code> level to all screens:</p>
-
-<p><code>&quot;sensorBrightness&quot;: true</code>,</p>
-
-<p>To use this feature send HTTP GET command to the ampronled software:</p>
-
-<p><code>http://ampronledIP:port/brightness/VALUE</code></p>
-<h3 id='5-automatic-brightness-from-hw-sensor-for-a-single-screen'>5. Automatic brightness from HW sensor for a single screen</h3>
-<p>To enable automatic brightness setting from HW sensor feature, the additional hardware unit should be installed inside every screen. The ambient lighting is measured at every screen and the brightness is adjusted automatically without server interference. Relevant configuration should also be done to screen controller and in the ampronled configuration file following parameter at <code>&quot;controllerIP&quot;</code> level to all screens shall be defined.</p>
-<h3 id='6-automatic-brightness-from-separately-located-hw-sensor-or-multiple-sensors-to-all-or-some-specific-screens'>6. Automatic brightness from separately located HW sensor or multiple sensors to all or some specific screens</h3>
-<p>To enable automatic brightness setting from single or multiple HW sensors, the additional hardware unit/units should be installed. The ambient lighting is measured at a specific location(s) compared in accordance with the defined algorithm and then the brightness information is sent to all screens or specifically selected screens. Relevant configurations must be done to ampronled configuration file and HW sensor units, as well as agreed algorithms, defined. This is usually done by Ampron technicians during the design phase.</p>
-<h3 id='7-advanced-automatic-brightness-management'>7. Advanced automatic brightness management</h3>
+<h3 id='4-advanced-automatic-brightness-management'>4. Advanced automatic brightness management</h3>
 <p>It is possible to manipulate different types of data to manage the brightness of screens eg.open web RSS feeds, parsing XML, using MODBUS/TCP etc. This feature requires additional Ampron Monitoring Module hardware unit and Ampron Monitoring Software.</p>
 <h2 id='configuration'>Configuration</h2><h3 id='description'>Description</h3>
 <p>The main configuration is set in a <code>config.json</code> file. Other configuration items are defined in various files and are linked to the main file according to specific needs.</p>
 
-<p><code>AFTER CHANGES TO THE CONFIGURATION, THE FILE SERVER NEEDS TO BE RESTARTED FOR CHANGES TO TAKE EFFECT</code></p>
-<h3 id='configurable-items'>Configurable Items</h3>
-<ul>
-<li>Server listening port</li>
-<li>Display group name</li>
-<li>Display ID</li>
-<li>Display IP and port</li>
-<li>Display meta name</li>
-<li>Display controller type</li>
-<li>Feedback server IP and port</li>
-<li>Display height</li>
-<li>Display width</li>
-<li>Display layout</li>
-<li>Display areas</li>
-<li>Content-type</li>
-<li>Text-based content alignment</li>
-<li>Text-based content font size</li>
-<li>Text-based content font colour</li>
-<li>Picture based content parameters</li>
-</ul>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9199"</span><span class="p">,</span><span class="w">
-
-    </span><span class="s2">"displays"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"GATE_OUT2"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-
-        </span><span class="s2">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"anyname"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"displayIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.100.100"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"displayPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9551"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"controllerType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"T430"</span><span class="p">,</span><span class="w">
-
-            </span><span class="s2">"confirmIp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"confirmPort"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9098"</span><span class="p">,</span><span class="w">
-
-            </span><span class="s2">"displayHeight"</span><span class="p">:</span><span class="w"> </span><span class="s2">"160"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"displayWidth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"96"</span><span class="p">,</span><span class="w">
-
-            </span><span class="s2">"layout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"vehicle"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"numberplate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 100 29"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="w">
-                    </span><span class="p">},</span><span class="w">
-                    </span><span class="s2">"infotext"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 30 100 69"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"static"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                            </span><span class="s2">"21"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Some static text"</span><span class="w">
-                        </span><span class="p">}</span><span class="w">
-                    </span><span class="p">},</span><span class="w">
-                    </span><span class="s2">"arrow"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 70 100 100"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                            </span><span class="s2">"S"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fwd.png"</span><span class="p">,</span><span class="w">
-                            </span><span class="s2">"RE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"left.png"</span><span class="w">
-                        </span><span class="p">}</span><span class="w">
-                    </span><span class="p">}</span><span class="w">
-                </span><span class="p">},</span><span class="w">
-                </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"all"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 100 100"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"image"</span><span class="p">,</span><span class="w">
-                        </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                            </span><span class="s2">"WAIT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pleasewait.png"</span><span class="p">,</span><span class="w">
-                            </span><span class="s2">"CLOSED"</span><span class="p">:</span><span class="w"> </span><span class="s2">"closed.png"</span><span class="w">
-                        </span><span class="p">}</span><span class="w">
-                    </span><span class="p">}</span><span class="w">
-                </span><span class="p">}</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-
-</span></code></pre><h2 id='define-different-play-styles'>Define different play-styles</h2>
-<p>It is possible to define different playstyles for areas. The functionality comprises of two features, <code>&quot;dispEffect&quot;</code> and <code>&quot;clearEffect&quot;</code>.
-dispEffect defines how the text enters into the area while clearEffect defines how it leaves eg. text enters from up to down and leaves the area from down and up again. there are 15 different entry and exit effects which can be combined.</p>
-
-<p>To enable different playstyles, define following parameters under <code>&quot;text&quot;</code> area in configuration file:</p>
-
-<p><code>&quot;dispEffect&quot;:&quot;VALUE1&quot;</code>, VALUE1 - 1...15<code>&quot;clearEffect&quot;:&quot;VALUE2&quot;</code>, VALUE2 - 1...15</p>
-
-<p>VALUE1 and VALUE2 can be different</p>
+<p><code>AFTER CHANGES TO THE CONFIGURATION, THE CONFIGURATION MUST BE RELOADED FOR CHANGES TO TAKE EFFECT</code></p>
 <h2 id='define-text-colour'>Define text colour</h2>
 <p>For <code>&quot;text&quot;</code> and &quot;static&quot; areas, it is possible to define font colour also with the GET request.</p>
 
@@ -875,20 +868,6 @@ dispEffect defines how the text enters into the area while clearEffect defines h
 <p><code>&quot;backgroundColor&quot;: &quot;0 255 255&quot;</code>, whereas <code>&quot;0 255 255&quot;</code> is the color of text background in RGB.</p>
 
 <p>It is also possible to define an alpha channel for this feature, <code>&quot;backgroundColor&quot;: &quot;0 255 255 127&quot;</code>, whereas 127 is alpha channel value 0...127</p>
-<h2 id='windows-command-line-options'>Windows command line options</h2>
-<p>Usage: ampronled-mlds-2.1.35-win.exe [options] [command]</p>
-
-<p>Commands:</p>
-
-<p><code>start [options]</code> - Start server.</p>
-
-<p><code>test</code> - Testing.</p>
-
-<p>Options:</p>
-
-<p><code>-h</code>, <code>--help</code> output usage information</p>
-
-<p><code>-V</code>, <code>--version</code>  output the version number</p>
 
       </div>
       <div class="dark-box">
