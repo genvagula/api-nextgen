@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Ampron LED Displays Communication Protocol API</title>
+    <title>AmpronLED NextGen API</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -347,7 +347,7 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>The purpose is to describe the configuration of Ampron LED display communication protocol. </p>
+<p>This page describes the configuration of Ampron LED display communication protocol -  AmpronLED NextGen. </p>
 <h2 id='ampronled-nextgen-software'>AmpronLED NextGen software</h2>
 <p>AmpronLED NextGen software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.</p>
 
@@ -444,14 +444,14 @@
 <h2 id='variables-and-requests'>Variables and Requests</h2><h3 id='layouts'>Layouts</h3>
 <p>Layouts are configurable views of LED displays. There can be multiple layouts for every single display. However, from the communications point of view, only one layout can be defined in a single GET request.</p>
 
-<p>Layouts are defined in config.json file, inside the block named “layout”.</p>
+<p>Layouts are defined in <code>config.json</code> file, inside the block named “layout”.</p>
 
-<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;nameZ=valueZ&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;nameZ=valueZ</code></p>
 <h2 id='areadata'>AreaData</h2>
-<p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then they will be disregarded as faulty.
+<p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then they will be disregarded as faulty.<br>
 If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 6 types of AreaData (static text, live text, images, date&amp;time, video and images):</p>
 
-<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC</code></p>
 <h2 id='status-responses'>Status Responses</h2><h3 id='command-status'>Command Status</h3>
 <p>AmpronLED NextGen software confirms synchronously with OK if the HTTP GET request is received and does not contain forbidden elements.
 AmpronLED NextGen software confirms the last control message status by visualising it at:</p>
@@ -466,20 +466,24 @@ AmpronLED NextGen software confirms the last control message status by visualisi
 
 <p><code>http://ipaddress:port/getethernetconfig</code></p>
 <h2 id='addressing'>Addressing</h2>
-<p>There can be 1 SLDS unit operated by one AmpronLED NextGen instance, however multiple id-s can be present in config.json:</p>
+<p>There can be 1 SLDS unit operated by one AmpronLED NextGen instance, however multiple id-s can be present in <code>config.json</code>:</p>
 
 <p>MLDS unit identifier -&gt; variable nameX is “id”, value is string max 255 chars</p>
 
-<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC&amp;inumber=XXXXX</code></p>
+<p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC</code></p>
 <h2 id='encoding-of-url-query-parameters'>Encoding of URL Query Parameters</h2>
 <p>Characters from the unreserved set are represented as-is without translation, other characters are converted to bytes according to UTF-8, and then percent-encoded.
 See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wikipedia Percent Encoding</a></p>
 <h1 id='configuration'>Configuration</h1><h2 id='main'>Main</h2>
 <p>The main configuration is set in a <code>config.json</code> file. Other configuration items are defined in various files and are linked to the main file according to specific needs using referencing.</p>
 <h2 id='uploading-configuration'>Uploading configuration</h2>
-<p>After changes to configuration, configuration files must: (a) be uploaded to SLDS via SFTP or (b)zipped and made available to be reached at desired URL. To download configuration files to SLDS, relevant HTTP GET command must be given:</p>
+<p>After changes to configuration, configuration files must:<br>
+(a) be uploaded to SLDS via SFTP or<br>
+(b)zipped and made available to be reached at desired URL.  </p>
 
-<p>`http://ipaddress:port/load_config?url=http://URL/conf.zip</p>
+<p>To download configuration files to SLDS, relevant HTTP GET command must be given:</p>
+
+<p><code>http://ipaddress:port/load_config?url=http://URL/conf.zip</code></p>
 <h2 id='activation-of-new-configuration'>Activation of new configuration</h2>
 <p>Configuration is checked every 3000 seconds and activated automatically, to force check use HTTP GET command:</p>
 
@@ -495,11 +499,15 @@ See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wik
 
 <p><code>http://ampronledIP:port/brightness/VALUE</code></p>
 
-<p>NOTE! To disable internal brightness scheduler to avoid it from overriding the manual value define in config.json:</p>
+<aside class="notice">
+NOTE! To disable internal brightness scheduler to avoid it from overriding the manual value:
+</aside>
 
-<p>&quot;sensorBrightness&quot;: true,</p>
+<p>define in <code>config.json</code>:  </p>
+
+<p><code>&quot;sensorBrightness&quot;: true,</code></p>
 <h2 id='changing-network-configuration'>Changing Network configuration</h2>
-<p>To change network configuration and enable/disable DHCP use commands (NB! remember, this should be used only if one id is defined in config.json):</p>
+<p>To change network configuration and enable/disable DHCP use commands (NB! remember, this should be used only if one id is defined in <code>config.json</code>):</p>
 
 <p><code>http://OLDipaddress:port/setethernetconfig?dhcp=true&amp;ip=NEWipaddress&amp;netmask=NEWnetmaskip&amp;gateway=NEWgatewayip&amp;dns=NEWdnsip</code> </p>
 
@@ -624,14 +632,16 @@ See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wik
 
 <p><code>Display ID</code> - String type unique value, up to 255 characters</p>
 
-<p>Replace default DISPLAYID with your own unique display ID name.</p>
+<aside class="notice">
+Replace default DISPLAYID with your own unique display ID name.
+</aside>
 <h2 id='display-ip-and-port'>Display IP and Port</h2><pre class="highlight json tab-json"><code><span class="w">
 </span><span class="s2">"displayIp"</span><span class="p">:</span><span class="w">    </span><span class="s2">"192.168.200.200"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"displayPort"</span><span class="p">:</span><span class="w">  </span><span class="s2">"10000"</span><span class="p">,</span><span class="w">
 </span></code></pre>
 <p>Set the following value in <code>config.json</code> file:</p>
 
-<p><code>“displayIP“</code>          -&gt; In the form of standard IPv4 address
+<p><code>“displayIP“</code>          -&gt; In the form of standard IPv4 address<br>
 <code>“displayPort“</code>         -&gt; Numerical value according to the specification</p>
 <h2 id='display-metaname'>Display Metaname</h2><pre class="highlight json tab-json"><code><span class="w">
 </span><span class="s2">"displayName"</span><span class="p">:</span><span class="w">  </span><span class="s2">"anyname"</span><span class="p">,</span><span class="w">
@@ -672,7 +682,9 @@ See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wik
 
 <p><code>areaID</code>        -&gt; String type of unique value, up to 255 characters</p>
 
-<p>Consider the values that make sense in your overall system configuration.</p>
+<aside class="notice">
+Consider the values that make sense in your overall system configuration.
+</aside>
 <h2 id='area-coordinates'>Area Coordinates</h2><pre class="highlight json tab-json"><code><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0 0 100 100"</span><span class="p">,</span><span class="w">
 </span></code></pre>
 <p>Define the following values in <code>config.json</code> file:</p>
@@ -702,26 +714,30 @@ Must physically fit into display area and no overlap with other areas.
 </span></code></pre>
 <p>If the chosen area type was chosen <code>static</code> then define section <code>texts</code> and add following variables:</p>
 
-<p><code>align</code> -&gt; text alginment. Possible values <code>center</code> or <code>left</code>
-<code>fontSize</code> -&gt; font size in pixels, must be smaller than area height
-<code>fontColor</code> -&gt; font color in RGB
-<code>ttl</code> -&gt; time in seconds after which content is erased or replaced by &quot;defaultValue&quot; 
-<code>defaultValue</code> -&gt; after expiration of ttl, the area content can be define as default text or image (picture1.png)
-<code>params</code> -&gt; parameters subgroup. Fixed value
-<code>TEXTID</code> -&gt; String type value, up to 255 characters
-<code>text</code> -&gt; Text to be displayed, up to 255 characters</p>
+<p><code>align</code> -&gt; text alginment. Possible values <code>center</code> or <code>left</code><br>
+<code>fontSize</code> -&gt; font size in pixels, must be smaller than area height<br>
+<code>fontColor</code> -&gt; font color in RGB<br>
+<code>ttl</code> -&gt; time in seconds after which content is erased or replaced by &quot;defaultValue&quot;<br>
+<code>defaultValue</code> -&gt; after expiration of ttl, the area content can be define as default text or image (picture1.png)<br>
+<code>params</code> -&gt; parameters subgroup. Fixed value<br>
+<code>TEXTID</code> -&gt; String type value, up to 255 characters<br>
+<code>text</code> -&gt; Text to be displayed, up to 255 characters  </p>
 
 <p>For &quot;text&quot; and &quot;static&quot; areas it is possible to define font color also with the GET request: </p>
 
-<p>http://ampronledIP:port/mlds?id=DISPLAY_ID&amp;layout=LAYOUT_NAME&amp;AREA_NAME=HELLO&amp;fontColor[AREA_NAME]=0_255_255 , where 0_255_255 is the color of text in RGB</p>
+<p><code>http://ampronledIP:port/mlds?id=DISPLAY_ID&amp;layout=LAYOUT_NAME&amp;AREA_NAME=HELLO&amp;fontColor[AREA_NAME]=0_255_255</code>  </p>
+
+<p>,where 0_255_255 is the color of text in RGB</p>
 
 <p>It is possible to define background color of &quot;text&quot; and &quot;static&quot; areas text. To set the background color of text, define following parameter under the relevant area:</p>
 
-<p>&quot;backgroundColor&quot;: &quot;0 255 255&quot;,    whereas &quot;0 255 255&quot; is the color of text background in RGB</p>
+<p><code>&quot;backgroundColor&quot;: &quot;0 255 255&quot;,</code>    whereas &quot;0 255 255&quot; is the color of text background in RGB</p>
 
 <p>it is also possible to define alpha channel for this feature, </p>
 
-<p>&quot;backgroundColor&quot;: &quot;0 255 255 127&quot;,  whereas 127 is alpha channel value 0...127</p>
+<p><code>&quot;backgroundColor&quot;: &quot;0 255 255 127&quot;,</code>  </p>
+
+<p>whereas 127 is alpha channel value 0...127</p>
 <h3 id='freetext-parameters'>Freetext Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"align"</span><span class="p">:</span><span class="w"> </span><span class="s2">"center"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"fontSize"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24"</span><span class="p">,</span><span class="w">
 </span><span class="s2">"fontColor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255 255 255"</span><span class="w">
@@ -734,26 +750,32 @@ Must physically fit into display area and no overlap with other areas.
 </span></code></pre>
 <p>If the chosen area type was chosen <code>text</code> then define following variables:</p>
 
-<p><code>align</code>     -&gt; text alginment. Possible values <code>center</code>, <code>right</code> or <code>left</code>. Valid only when text fits into area.
-<code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height
-<code>fontColor</code> -&gt; font color in RGB
-<code>textFromStart</code> -&gt; start scrolling text from beginning on update
-<code>textLiveUpdate</code> -&gt; update text on the fly
-<code>headToTail</code> -&gt; add spaces between scrolling text end and start
-<code>scrollSpeed</code> -&gt; manage scrolling speed, values 0 to 8, default 4
-<code>font</code> -&gt; assign specific font to the area, relevant .ttf file must be located in <code>fonts/filename</code>, relative to <code>ampronled</code></p>
+<p><code>align</code>     -&gt; text alginment. Possible values <code>center</code>, <code>right</code> or <code>left</code>. Valid only when text fits into area.<br>
+<code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height<br>
+<code>fontColor</code> -&gt; font color in RGB<br>
+<code>textFromStart</code> -&gt; start scrolling text from beginning on update<br>
+<code>textLiveUpdate</code> -&gt; update text on the fly<br>
+<code>headToTail</code> -&gt; add spaces between scrolling text end and start<br>
+<code>scrollSpeed</code> -&gt; manage scrolling speed, values 0 to 8, default 4<br>
+<code>font</code> -&gt; assign specific font to the area, relevant .ttf file must be located in <code>fonts/filename</code>, relative to <code>ampronled</code>  </p>
 
 <p>For &quot;text&quot; and &quot;static&quot; areas it is possible to define font color also with the GET request: </p>
 
-<p>http://ampronledIP:port/mlds?id=DISPLAY_ID&amp;layout=LAYOUT_NAME&amp;AREA_NAME=HELLO&amp;fontColor[AREA_NAME]=0_255_255 , where 0_255_255 is the color of text in RGB</p>
+<p><code>http://ampronledIP:port/mlds?id=DISPLAY_ID&amp;layout=LAYOUT_NAME&amp;AREA_NAME=HELLO&amp;fontColor[AREA_NAME]=0_255_255</code>  </p>
+
+<p>,where 0_255_255 is the color of text in RGB</p>
 
 <p>It is possible to define background color of &quot;text&quot; and &quot;static&quot; areas text. To set the background color of text, define following parameter under the relevant area:</p>
 
-<p>&quot;backgroundColor&quot;: &quot;0 255 255&quot;,    whereas &quot;0 255 255&quot; is the color of text background in RGB</p>
+<p><code>&quot;backgroundColor&quot;: &quot;0 255 255&quot;,</code>  </p>
+
+<p>,whereas &quot;0 255 255&quot; is the color of text background in RGB</p>
 
 <p>it is also possible to define alpha channel for this feature, </p>
 
-<p>&quot;backgroundColor&quot;: &quot;0 255 255 127&quot;,  whereas 127 is alpha channel value 0...127</p>
+<p><code>&quot;backgroundColor&quot;: &quot;0 255 255 127&quot;,</code>  </p>
+
+<p>,whereas 127 is alpha channel value 0...127</p>
 <h3 id='picture-parameters'>Picture Parameters</h3><pre class="highlight json tab-json"><code><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"PICTUREID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filename1.gif"</span><span class="p">,</span><span class="w">
           </span><span class="p">}</span><span class="w">
@@ -785,53 +807,174 @@ Must physically fit into display area and no overlap with other areas.
 </span></code></pre>
 <p>If the chosen area type was chosen <code>date</code> then define following variables:</p>
 
-<p><code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height
-<code>fontColor</code> -&gt; font color in RGB
-<code>font</code> -&gt; assign specific font to the area, relevant .ttf file must be located in <code>fonts/filename</code>, relative to <code>ampronled</code>
-<code>dateOffset</code> -&gt; offset in hours from GMT+0</p>
+<p><code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height<br>
+<code>fontColor</code> -&gt; font color in RGB<br>
+<code>font</code> -&gt; assign specific font to the area, relevant .ttf file must be located in <code>fonts/filename</code>, relative to <code>ampronled</code><br>
+<code>dateOffset</code> -&gt; offset in hours from GMT+0  </p>
 
 <p><code>dateFormat</code> -&gt; see time formatting options:</p>
 
-<p>Symbol   Meaning                Presentation       Example
-                ------   -------                ------------       -------
-                G        era designator         (Text)             AD
-                y        year                   (Number)           1996
-                M        month in year          (Text &amp; Number)    July &amp; 07
-                L        standalone month       (Text &amp; Number)    July &amp; 07
-                d        day in month           (Number)           10
-                c        standalone day         (Number)           10
-                h        hour in am/pm (1~12)   (Number)           12
-                H        hour in day (0~23)     (Number)           0
-                m        minute in hour         (Number)           30
-                s        second in minute       (Number)           55
-                S        fractional second      (Number)           978
-                E        day of week            (Text)             Tuesday
-                D        day in year            (Number)           189
-                a        am/pm marker           (Text)             PM
-                k        hour in day (1~24)     (Number)           24
-                K        hour in am/pm (0~11)   (Number)           0
-                z        time zone              (Text)             Pacific Standard Time
-                Z        time zone (RFC 822)    (Number)           -0800
-                v        time zone (generic)    (Text)             Pacific Time
-                Q        quarter                (Text)             Q3
-                &#39;        escape for text        (Delimiter)        &#39;Date=&#39;
-                &#39;&#39;       single quote           (Literal)          &#39;o&#39;&#39;clock&#39; </p>
+<table><thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Presentation</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>G</td>
+<td>era designator</td>
+<td>(Text)</td>
+<td>AD</td>
+</tr>
+<tr>
+<td>y</td>
+<td>year</td>
+<td>(Number)</td>
+<td>1996</td>
+</tr>
+<tr>
+<td>M</td>
+<td>month in year</td>
+<td>(Text &amp; Number)</td>
+<td>July &amp; 07</td>
+</tr>
+<tr>
+<td>L</td>
+<td>standalone month</td>
+<td>(Text &amp; Number)</td>
+<td>July &amp; 07</td>
+</tr>
+<tr>
+<td>d</td>
+<td>day in month</td>
+<td>(Number)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>c</td>
+<td>standalone day</td>
+<td>(Number)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>h</td>
+<td>hour in am/pm (1~12)</td>
+<td>(Number)</td>
+<td>12</td>
+</tr>
+<tr>
+<td>H</td>
+<td>hour in day (0~23)</td>
+<td>(Number)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>m</td>
+<td>minute in hour</td>
+<td>(Number)</td>
+<td>30</td>
+</tr>
+<tr>
+<td>s</td>
+<td>second in minute</td>
+<td>(Number)</td>
+<td>55</td>
+</tr>
+<tr>
+<td>S</td>
+<td>fractional second</td>
+<td>(Number)</td>
+<td>978</td>
+</tr>
+<tr>
+<td>E</td>
+<td>day of week</td>
+<td>(Text)</td>
+<td>Tuesday</td>
+</tr>
+<tr>
+<td>D</td>
+<td>day in year</td>
+<td>(Number)</td>
+<td>189</td>
+</tr>
+<tr>
+<td>a</td>
+<td>am/pm marker</td>
+<td>(Text)</td>
+<td>PM</td>
+</tr>
+<tr>
+<td>k</td>
+<td>hour in day (1~24)</td>
+<td>(Number)</td>
+<td>24</td>
+</tr>
+<tr>
+<td>K</td>
+<td>hour in am/pm (0~11)</td>
+<td>(Number)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>z</td>
+<td>time zone</td>
+<td>(Text)</td>
+<td>Pacific Standard Time</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>time zone (RFC 822)</td>
+<td>(Number)</td>
+<td>-0800</td>
+</tr>
+<tr>
+<td>v</td>
+<td>time zone (generic)</td>
+<td>(Text)</td>
+<td>Pacific Time</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>quarter</td>
+<td>(Text)</td>
+<td>Q3</td>
+</tr>
+<tr>
+<td>&#39;</td>
+<td>escape for text</td>
+<td>(Delimiter)</td>
+<td>&#39;Date=&#39;</td>
+</tr>
+<tr>
+<td>&#39;&#39;</td>
+<td>single quote</td>
+<td>(Literal)</td>
+<td>&#39;o&#39;&#39;clock&#39;</td>
+</tr>
+</tbody></table>
 <h2 id='monitoring-and-bite'>Monitoring and BITE</h2>
-<p>Status information of SLDS can be checked http://ipaddress:port/info and http://ipaddress:port/status</p>
+<p>Status information of SLDS can be checked <code>http://ipaddress:port/info</code> and <code>http://ipaddress:port/status</code></p>
 
-<p>It is possible to check screenshot of current view on the screen(this will currently not show video area content): http://ipaddress:port/screenshot</p>
+<p>It is possible to check screenshot of current view on the screen(this will currently not show video area content): <code>http://ipaddress:port/screenshot</code></p>
 <h2 id='logging'>Logging</h2>
-<p>Logging should be implemented by TPCM via checking <code>http://ipaddress:port/info</code> page</p>
+<p>Logging should be implemented by TPCM via checking the page at:<br>
+<code>http://ipaddress:port/info</code></p>
 <h1 id='errors'>Errors</h1>
-<p>AmpronLED NextGen visualises errors and current status at http://ampronledIP:port/info</p>
+<p>AmpronLED NextGen visualises errors and current status at<br>
+<code>http://ampronledIP:port/info</code></p>
 
-<p>To check what is currently on screen requwst for screenshot: http://ipaddress:port/screenshot</p>
+<p>To check what is currently on screen requwst for screenshot:<br>
+<code>http://ipaddress:port/screenshot</code></p>
 <h1 id='how-to-features'>How To (Features)</h1><h2 id='brightness-control'>Brightness control</h2><h3 id='it-is-possible-to-change-the-brightness-of-the-display-in-6-different-ways'>It is possible to change the brightness of the display in 6 different ways:</h3><h3 id='1-automatic-daylight'>1. Automatic daylight</h3>
-<p>This is the default mode, brightness is changed between 50% and 100% automatically. Time of change is defined by sunset and sunrise with an accuracy of 2 weeks, example:
-in the first half of May, the daytime starts later than in the second half of May and in the first half of June later than in the second half of May etc. Default sunset times are taken for local longitude and latitude.</p>
+<p>This is the default mode, brightness is changed between 50% and 100% automatically. Time of change is defined by sunset and sunrise with an accuracy of 2 weeks, example:<br>
+in the first half of May, the daytime starts later than in the second half of May and in the first half of June later than in the second half of May etc.<br>
+Default sunset times are taken for local longitude and latitude.</p>
 <h3 id='2-automatic-daylight-specific-location'>2. Automatic daylight, specific location</h3>
 <p>With this mode, it is possible to define the sunrise and sunset times and also relevant brightness %, for each half months.
-To use this feature, it is needed to add a specific brightness-schedule.json file to ampronled directory (with X permissions), if the file is present then it is used, if not then default schedule is used).</p>
+To use this feature, it is needed to add a specific <code>brightness-schedule.json</code> file to ampronled directory (with X permissions), if the file is present then it is used, if not then default schedule is used).</p>
 <h3 id='3-manual-brightness-for-a-single-screen'>3. Manual brightness for a single screen</h3>
 <p>To enable manual brightness setting feature, define the following parameter at <code>&quot;displayIP&quot;</code> level:</p>
 
@@ -847,7 +990,9 @@ To use this feature, it is needed to add a specific brightness-schedule.json fil
 <h2 id='configuration'>Configuration</h2><h3 id='description'>Description</h3>
 <p>The main configuration is set in a <code>config.json</code> file. Other configuration items are defined in various files and are linked to the main file according to specific needs.</p>
 
-<p><code>AFTER CHANGES TO THE CONFIGURATION, THE CONFIGURATION MUST BE RELOADED FOR CHANGES TO TAKE EFFECT</code></p>
+<aside class="warning">
+After changes to the configuration, the configuration must be reloaded for changes to take effect
+</aside>
 <h2 id='define-text-colour'>Define text colour</h2>
 <p>For <code>&quot;text&quot;</code> and &quot;static&quot; areas, it is possible to define font colour also with the GET request.</p>
 
