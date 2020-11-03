@@ -21,7 +21,7 @@ This page describes the configuration of Ampron LED display communication protoc
 
 ## AmpronLED NextGen software
 
-AmpronLED NextGen software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.
+AmpronLED NextGen software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED NextGen software together combine the solution that we define as Smart LED Display System.
 
 Current API defines the ways of configuring and communicating with the software. The general approach, method, syntax and semantics are described in the following chapters.
 
@@ -67,7 +67,7 @@ The complete system is composed of the following components:
 
 ## Method, Syntax and Semantics
 ### Method
-Messaging between TPCM and AmpronLED NEXTGEN is performed by using **HTTP GET** method.
+Messaging between TPCM and AmpronLED NextGen is performed by using **HTTP GET** method.
 
 ### Syntax
 Control message format between TPCM and AmpronLED NextGen is HTTP Request:
@@ -86,13 +86,12 @@ Control message format between TPCM and AmpronLED NextGen is HTTP Request:
 ### Semantics
 `nameX = valueX` - nameX is variable identifier and valueX is value of variable
 
-There are five types of variables:
+There are four types of variables:
 
 * Layouts
 * AreaData
 * Status responses 
 * Addressing
-* Numbering
 
 Please see the next chapter for details
 
@@ -105,8 +104,8 @@ Layouts are defined in `config.json` file, inside the block named “layout”.
 `GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&nameZ=valueZ`
 
 ## AreaData 
-AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then they will be disregarded as faulty.  
-If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 6 types of AreaData (static text, live text, images, date&time, video and images):
+AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then they will be disregarded.  
+If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 5 types of AreaData (static text, live text, images, date&time and video):
 
 `GET http://ipaddress:port/mlds?id=GATE_2&layout=vehiclenumber&kiosk=21&plate=123ABC`
 
@@ -147,7 +146,7 @@ The main configuration is set in a `config.json` file. Other configuration items
 ## Uploading configuration
 After changes to configuration, configuration files must:  
 (a) be uploaded to SLDS via SFTP or  
-(b)zipped and made available to be reached at desired URL.  
+(b) zipped and made available to be reached at desired URL.  
   
 To download configuration files to SLDS, relevant HTTP GET command must be given:
 
@@ -155,7 +154,7 @@ To download configuration files to SLDS, relevant HTTP GET command must be given
 
 ## Activation of new configuration
 
-Configuration is checked every 3000 seconds and activated automatically, to force check use HTTP GET command:
+Configuration is checked every 3000 seconds and activated automatically, to force check earlier use HTTP GET command:
 
 `http://ipaddress:port/reload_config`
 
@@ -451,7 +450,7 @@ Define the following values in `config.json` file:
 
 If the chosen area type was chosen `static` then define section `texts` and add following variables:
   
-`align` -> text alginment. Possible values `center` or `left`  
+`align` -> text alignment. Possible values `center`, `right` or `left`  
 `fontSize` -> font size in pixels, must be smaller than area height  
 `fontColor` -> font color in RGB  
 `ttl` -> time in seconds after which content is erased or replaced by "defaultValue"  
@@ -492,7 +491,7 @@ whereas 127 is alpha channel value 0...127
 
 If the chosen area type was chosen `text` then define following variables:
 
-`align`     -> text alginment. Possible values `center`, `right` or `left`. Valid only when text fits into area.  
+`align`     -> text alignment. Possible values `center`, `right` or `left`. Valid only when text fits into area.  
 `fontSize`  -> font size in pixels, must be smaller than area height  
 `fontColor` -> font color in RGB  
 `textFromStart` -> start scrolling text from beginning on update  

@@ -43,7 +43,7 @@ After changes to the configuration, the configuration must be reloaded for chang
 
 ## Define text colour
 
-For `"text"` and "static" areas, it is possible to define font colour also with the GET request.
+For `"text"` and `"static"` areas, it is possible to define font colour also with the GET request.
 
 `http://ampronledIP:port/mlds?id=DISPLAY_ID&layout=LAYOUT_NAME&AREA_NAME=HELLO&fontColor[AREA_NAME]=0_255_255`
 

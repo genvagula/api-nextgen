@@ -26,6 +26,14 @@ bundle exec middleman server
 vagrant up
 ```
 
+
+# Publishing API documentation
+
+1. Make sure you're working on a fork in your own account, not our original repo: git remote show origin.
+2. Commit your changes to the markdown source: git commit -a -m "Update index.md"
+3. Push the markdown source changes to GitHub: git push
+4. Run ./deploy.sh
+
 You can now see the docs at http://localhost:4567. Whoa! That was fast!
 
 Now that Slate is all set up on your machine, you'll probably want to learn more about [editing Slate markdown](https://github.com/lord/slate/wiki/Markdown-Syntax), or [how to publish your docs](https://github.com/lord/slate/wiki/Deploying-Slate).
