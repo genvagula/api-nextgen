@@ -349,7 +349,7 @@
         <h1 id='introduction'>Introduction</h1>
 <p>This page describes the configuration of Ampron LED display communication protocol -  AmpronLED NextGen. </p>
 <h2 id='ampronled-nextgen-software'>AmpronLED NextGen software</h2>
-<p>AmpronLED NextGen software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED software together combine the solution that we define as Smart LED Display System.</p>
+<p>AmpronLED NextGen software is designed to drive and monitor the status of Ampron LED displays. Our LED display hardware and AmpronLED NextGen software together combine the solution that we define as Smart LED Display System.</p>
 
 <p>Current API defines the ways of configuring and communicating with the software. The general approach, method, syntax and semantics are described in the following chapters.</p>
 
@@ -390,7 +390,7 @@
 
 <p><img src="images/Ampron_LED_Communication_Overview.png" alt="Ampron LED Communication Overview" /> </p>
 <h2 id='method-syntax-and-semantics'>Method, Syntax and Semantics</h2><h3 id='method'>Method</h3>
-<p>Messaging between TPCM and AmpronLED NEXTGEN is performed by using <strong>HTTP GET</strong> method.</p>
+<p>Messaging between TPCM and AmpronLED NextGen is performed by using <strong>HTTP GET</strong> method.</p>
 <h3 id='syntax'>Syntax</h3>
 <p>Control message format between TPCM and AmpronLED NextGen is HTTP Request:</p>
 
@@ -430,14 +430,13 @@
 <h3 id='semantics'>Semantics</h3>
 <p><code>nameX = valueX</code> - nameX is variable identifier and valueX is value of variable</p>
 
-<p>There are five types of variables:</p>
+<p>There are four types of variables:</p>
 
 <ul>
 <li>Layouts</li>
 <li>AreaData</li>
 <li>Status responses </li>
 <li>Addressing</li>
-<li>Numbering</li>
 </ul>
 
 <p>Please see the next chapter for details</p>
@@ -448,8 +447,8 @@
 
 <p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;nameZ=valueZ</code></p>
 <h2 id='areadata'>AreaData</h2>
-<p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then they will be disregarded as faulty.<br>
-If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 6 types of AreaData (static text, live text, images, date&amp;time, video and images):</p>
+<p>AreaDatas are configurable sections (Areas) in every Layout. There can be multiple Areas in one Layout. From the communications point of view, if there are nameX=valueX pairs in the GET request, which are not described in the configuration file, then they will be disregarded.<br>
+If there are no pairs or fewer pairs than defined in Area configuration, the request will be handled as a request for a blank screen or blank area respectively. There are 5 types of AreaData (static text, live text, images, date&amp;time and video):</p>
 
 <p><code>GET http://ipaddress:port/mlds?id=GATE_2&amp;layout=vehiclenumber&amp;kiosk=21&amp;plate=123ABC</code></p>
 <h2 id='status-responses'>Status Responses</h2><h3 id='command-status'>Command Status</h3>
@@ -479,13 +478,13 @@ See <a href='https://en.wikipedia.org/wiki/Percent-encoding' target="_blank">Wik
 <h2 id='uploading-configuration'>Uploading configuration</h2>
 <p>After changes to configuration, configuration files must:<br>
 (a) be uploaded to SLDS via SFTP or<br>
-(b)zipped and made available to be reached at desired URL.  </p>
+(b) zipped and made available to be reached at desired URL.  </p>
 
 <p>To download configuration files to SLDS, relevant HTTP GET command must be given:</p>
 
 <p><code>http://ipaddress:port/load_config?url=http://URL/conf.zip</code></p>
 <h2 id='activation-of-new-configuration'>Activation of new configuration</h2>
-<p>Configuration is checked every 3000 seconds and activated automatically, to force check use HTTP GET command:</p>
+<p>Configuration is checked every 3000 seconds and activated automatically, to force check earlier use HTTP GET command:</p>
 
 <p><code>http://ipaddress:port/reload_config</code></p>
 
@@ -714,7 +713,7 @@ Must physically fit into display area and no overlap with other areas.
 </span></code></pre>
 <p>If the chosen area type was chosen <code>static</code> then define section <code>texts</code> and add following variables:</p>
 
-<p><code>align</code> -&gt; text alginment. Possible values <code>center</code> or <code>left</code><br>
+<p><code>align</code> -&gt; text alignment. Possible values <code>center</code>, <code>right</code> or <code>left</code><br>
 <code>fontSize</code> -&gt; font size in pixels, must be smaller than area height<br>
 <code>fontColor</code> -&gt; font color in RGB<br>
 <code>ttl</code> -&gt; time in seconds after which content is erased or replaced by &quot;defaultValue&quot;<br>
@@ -750,7 +749,7 @@ Must physically fit into display area and no overlap with other areas.
 </span></code></pre>
 <p>If the chosen area type was chosen <code>text</code> then define following variables:</p>
 
-<p><code>align</code>     -&gt; text alginment. Possible values <code>center</code>, <code>right</code> or <code>left</code>. Valid only when text fits into area.<br>
+<p><code>align</code>     -&gt; text alignment. Possible values <code>center</code>, <code>right</code> or <code>left</code>. Valid only when text fits into area.<br>
 <code>fontSize</code>  -&gt; font size in pixels, must be smaller than area height<br>
 <code>fontColor</code> -&gt; font color in RGB<br>
 <code>textFromStart</code> -&gt; start scrolling text from beginning on update<br>
@@ -994,7 +993,7 @@ To use this feature, it is needed to add a specific <code>brightness-schedule.js
 After changes to the configuration, the configuration must be reloaded for changes to take effect
 </aside>
 <h2 id='define-text-colour'>Define text colour</h2>
-<p>For <code>&quot;text&quot;</code> and &quot;static&quot; areas, it is possible to define font colour also with the GET request.</p>
+<p>For <code>&quot;text&quot;</code> and <code>&quot;static&quot;</code> areas, it is possible to define font colour also with the GET request.</p>
 
 <p><code>http://ampronledIP:port/mlds?id=DISPLAY_ID&amp;layout=LAYOUT_NAME&amp;AREA_NAME=HELLO&amp;fontColor[AREA_NAME]=0_255_255</code></p>
 
